@@ -1,8 +1,6 @@
 # DE-Forest - Differential Evolution Forest
 
-1. Diagram of the proposed method:
-
-
+1. Diagram of the proposed method.
 
 2. Datasets: (datasets, dbig, dsmall) from KEEL repository.
 3. [EnsembleDiversityTests](https://github.com/kbogas/EnsembleDiversityTests)
