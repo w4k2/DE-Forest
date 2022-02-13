@@ -2,7 +2,7 @@
 
 1. Diagram of the proposed method:
 
-![DE-Forest-aggregated.drawio](/home/joannagrzyb/Documents/PWR/Praca naukowa/SOORF(DE-Forest)/DE-Forest-aggregated.drawio.png)
+
 
 2. Datasets: (datasets, dbig, dsmall) from KEEL repository.
 3. [EnsembleDiversityTests](https://github.com/kbogas/EnsembleDiversityTests)
