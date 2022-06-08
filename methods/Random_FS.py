@@ -17,13 +17,12 @@ Metoda wybiera cechy losowo - nowo zaimplementowany Random Forest, oryginalnie z
 
 
 class RandomFS(BaseEstimator):
-    def __init__(self, base_classifier, n_classifiers=10, test_size=0.5, objectives=1, p_size=100, predict_decision="MV", bootstrap=False, max_features_selected=True):
+    def __init__(self, base_classifier, n_classifiers=10, test_size=0.5, objectives=1, predict_decision="MV", bootstrap=False, max_features_selected=True):
         self.base_classifier = base_classifier
         self.n_classifiers = n_classifiers
         self.classes = None
         self.test_size = test_size
         self.objectives = objectives
-        self.p_size = p_size
         self.selected_features = []
         self.predict_decision = predict_decision
         self.bootstrap = bootstrap
