@@ -75,7 +75,7 @@ def double_fault_measure(relationship_tables):
 
 
 # Calculates all 5 metrics
-def calc_diversity_measures(X, y, classifier_pool, p=0):
+def calc_diversity_measures0(X, y, classifier_pool, p=0):
     L = len(classifier_pool)
     predictions = np.array([np.equal(_.predict(X), y).astype(np.int) for _ in classifier_pool])
     tables = make_relationship_tables(predictions)

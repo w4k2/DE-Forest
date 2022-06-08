@@ -2,10 +2,10 @@ import numpy as np
 from sklearn.base import BaseEstimator, clone
 from sklearn.utils import resample
 from scipy.stats import mode
-from random import choices
+from random import choice
 import math
 from utils_diversity import calc_diversity_measures
-import sys
+# import sys
 
 # Setup to print all dataset array
 # np.set_printoptions(threshold=sys.maxsize)
@@ -17,7 +17,7 @@ Metoda wybiera cechy losowo - nowo zaimplementowany Random Forest, oryginalnie z
 
 
 class RandomFS(BaseEstimator):
-    def __init__(self, base_classifier, n_classifiers=10, test_size=0.5, objectives=1, p_size=100, predict_decision="MV", bootstrap=False):
+    def __init__(self, base_classifier, n_classifiers=10, test_size=0.5, objectives=1, p_size=100, predict_decision="MV", bootstrap=False, max_features_selected=True):
         self.base_classifier = base_classifier
         self.n_classifiers = n_classifiers
         self.classes = None
@@ -27,6 +27,7 @@ class RandomFS(BaseEstimator):
         self.selected_features = []
         self.predict_decision = predict_decision
         self.bootstrap = bootstrap
+        self.max_features_selected = max_features_selected
 
     def partial_fit(self, X, y, classes=None):
         self.X, self.y = X, y
@@ -38,20 +39,25 @@ class RandomFS(BaseEstimator):
         # Random feature selection
         # Wybiera cechy randomowo, ale maksymalna liczba wybranych cech jest mniejsza lub równa sqrt(n_features)
         features = []
-        for clf in range(self.n_classifiers):
-            max_features = int(math.sqrt(n_features))
-            count_1 = max_features
-            count_0 = n_features - max_features
-            total_count = n_features
-            for f in range(n_features):
-                random_number = np.random.randint(0, total_count)
-                if random_number < count_1:
-                    features.append(True)
-                    count_1 = count_1 - 1
-                else:
-                    features.append(False)
-                    count_0 = count_0 - 1
-                total_count = total_count - 1
+        if self.max_features_selected:
+            for clf in range(self.n_classifiers):
+                max_features = int(math.sqrt(n_features))
+                count_1 = max_features
+                count_0 = n_features - max_features
+                total_count = n_features
+                for f in range(n_features):
+                    random_number = np.random.randint(0, total_count)
+                    if random_number < count_1:
+                        features.append(True)
+                        count_1 = count_1 - 1
+                    else:
+                        features.append(False)
+                        count_0 = count_0 - 1
+                    total_count = total_count - 1
+        else:
+            for clf in range(self.n_classifiers):
+                for f in range(n_features):
+                    features.append(choice([True, False]))
         self.selected_features = features
         self.selected_features = np.array_split(self.selected_features, self.n_classifiers)
 

@@ -123,7 +123,7 @@ def compute(dataset_id, dataset_path):
                 print("DONE METHOD %s - %s (Time: %d [s])" % (clf_name, dataset_path, end_method))
 
                 # Take diversity results from DiversityTests: correlation, Q-statistic, Cohen's k
-                diversities_cor_q_k[clf_id, fold_id] = clf.diversities
+                # diversities_cor_q_k[clf_id, fold_id] = clf.diversities
 
                 # Save values from optimization
                 val = [e.opt.get("F")[0] for e in clf.res_history]
@@ -147,10 +147,10 @@ def compute(dataset_id, dataset_path):
                 os.makedirs("results/pre_experiment/diversity_results/%s/" % (dataset_name))
             np.savetxt(fname=filename, fmt="%f", X=diversity[clf_id, :, :])
             # Save diversity results from DiversityTests: correlation, Q-statistic, Cohen's k
-            filename = "results/pre_experiment/diversities_cor_q_k/%s/%s_cqk.csv" % (dataset_name, clf_name)
-            if not os.path.exists("results/pre_experiment/diversities_cor_q_k/%s/" % (dataset_name)):
-                os.makedirs("results/pre_experiment/diversities_cor_q_k/%s/" % (dataset_name))
-            np.savetxt(fname=filename, fmt="%f", X=diversities_cor_q_k[clf_id, :, :])
+            # filename = "results/pre_experiment/diversities_cor_q_k/%s/%s_cqk.csv" % (dataset_name, clf_name)
+            # if not os.path.exists("results/pre_experiment/diversities_cor_q_k/%s/" % (dataset_name)):
+            #     os.makedirs("results/pre_experiment/diversities_cor_q_k/%s/" % (dataset_name))
+            # np.savetxt(fname=filename, fmt="%f", X=diversities_cor_q_k[clf_id, :, :])
 
         end = time.time() - start
         logging.info("DONE - %s (Time: %d [s])" % (dataset_path, end))

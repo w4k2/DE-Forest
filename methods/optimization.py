@@ -1,10 +1,9 @@
 import numpy as np
 from sklearn.model_selection import train_test_split
 from sklearn.base import clone
-from pymoo.core.problem import ElementwiseProblem
 from sklearn.metrics import accuracy_score, balanced_accuracy_score
 from scipy.stats import mode
-from EnsembleDiversityTests.EnsembleDiversityTests import DiversityTests
+from pymoo.core.problem import ElementwiseProblem
 
 
 class Optimization(ElementwiseProblem):
@@ -19,7 +18,6 @@ class Optimization(ElementwiseProblem):
         self.classes_, _ = np.unique(self.y, return_inverse=True)
         self.metric_name = metric_name
         self.alpha = alpha
-        # self.models = {}
 
         self.test_size = 0
         if self.test_size != 0:
@@ -55,16 +53,6 @@ class Optimization(ElementwiseProblem):
         for sf in selected_features:
             # If at least one element in sf is True
             if True in sf:
-                # key = np.array2string(sf.astype(int), separator="")[1:-1]
-                # # print(key)
-                # if key in self.models.keys():
-                #     print("MEM")
-                #     ensemble.append(self.models[key])
-                # else:
-                #     candidate = clone(self.estimator).fit(self.X_train[:, sf], self.y_train)
-                #     ensemble.append(candidate)
-                #     self.models[key] = candidate
-
                 candidate = clone(self.estimator).fit(self.X_train[:, sf], self.y_train)
                 ensemble.append(candidate)
 
@@ -80,29 +68,12 @@ class Optimization(ElementwiseProblem):
             self.metric = [accuracy_score(self.y_test, y_pred)]
         elif self.metric_name == "BAC":
             self.metric = [balanced_accuracy_score(self.y_test, y_pred)]
-        elif self.metric_name == "Aggregate":
-            accuracy = accuracy_score(self.y_test, y_pred)
-            predictions = []
-            names = []
-            for clf_ind, member_clf in enumerate(ensemble):
-                predictions.append(member_clf.predict(self.X[:, selected_features[clf_ind]]).tolist())
-                names.append(str(clf_ind))
-            test_class = DiversityTests(predictions, names, self.y_test)
-            diversities = test_class.get_avg_pairwise(print_flag=False)
-            correlation = (diversities[0] + 1) / 2
-            self.metric = [self.alpha * accuracy + (1 - self.alpha) * correlation]
-            # print("METRIC")
-            # print(self.metric)
         return self.metric
 
     def _evaluate(self, x, out, *args, **kwargs):
         scores = self.validation(x)
-        # print(x, scores)
-
         # Function F is always minimize, but the minus sign (-) before F means maximize
         f1 = -1 * scores[0]
-        # f2 = -1 * scores[1]
-        # out["F"] = anp.column_stack(np.array([f1, f2]))
         out["F"] = f1
 
         # Function constraint to select specific numbers of features:

@@ -1,21 +1,20 @@
 import numpy as np
-# import os
 from sklearn.base import BaseEstimator, clone
 from sklearn.utils import resample
+from sklearn.model_selection import RepeatedStratifiedKFold
+from sklearn.metrics import balanced_accuracy_score
 from scipy.stats import mode
 from pymoo.algorithms.soo.nonconvex.de import DE
 from pymoo.operators.sampling.lhs import LHS
 from pymoo.optimize import minimize
-from pymoo.core.problem import starmap_parallelized_eval
-from multiprocessing.pool import Pool
-
-from .optimization import Optimization
+from pymoo.factory import get_termination
+from .optimization_cv import Optimization
 from .bootstrap_optimization import BootstrapOptimization
 from utils_diversity import calc_diversity_measures
 
 
 class SingleObjectiveOptimizationRandomForest(BaseEstimator):
-    def __init__(self, base_classifier, metric_name, alpha=0.5, n_classifiers=10, test_size=0.5, objectives=1, p_size=100, predict_decision="MV", bootstrap=False, n_proccess=2):
+    def __init__(self, base_classifier, metric_name, alpha=0.5, n_classifiers=10, test_size=0.5, objectives=1, p_size=10, predict_decision="MV", bootstrap=False, n_proccess=2, random_state_cv=222, pruning=False):
         self.base_classifier = base_classifier
         self.n_classifiers = n_classifiers
         self.classes = None
@@ -28,6 +27,8 @@ class SingleObjectiveOptimizationRandomForest(BaseEstimator):
         self.alpha = alpha
         self.bootstrap = bootstrap
         self.n_proccess = n_proccess
+        self.random_state_cv = random_state_cv
+        self.pruning = pruning
 
     def partial_fit(self, X, y, classes=None):
         self.X, self.y = X, y
@@ -37,6 +38,7 @@ class SingleObjectiveOptimizationRandomForest(BaseEstimator):
             self.classes_, _ = np.unique(self.y, return_inverse=True)
         n_features = X.shape[1]
 
+        cross_validation = RepeatedStratifiedKFold(n_splits=2, n_repeats=5, random_state=self.random_state_cv)
         # Bootstrap
         X_b = []
         y_b = []
@@ -46,8 +48,6 @@ class SingleObjectiveOptimizationRandomForest(BaseEstimator):
                 Xy_bootstrap = resample(X, y, replace=True, random_state=random_state)
                 X_b.append(Xy_bootstrap[0])
                 y_b.append(Xy_bootstrap[1])
-            # Parallelization - run program on n_proccess (threads)
-            # pool = Pool(self.n_proccess)
             # Create optimization problem
             problem = BootstrapOptimization(X, y, X_b, y_b, test_size=self.test_size, estimator=self.base_classifier, n_features=n_features, n_classifiers=self.n_classifiers, metric_name=self.metric_name, alpha=self.alpha)
             algorithm = DE(
@@ -59,11 +59,8 @@ class SingleObjectiveOptimizationRandomForest(BaseEstimator):
                 jitter=False
                 )
         else:
-            # Parallelization - run program on n_proccess (threads)
-            # pool = Pool(self.n_proccess)
             # Create optimization problem
-            problem = Optimization(X, y, test_size=self.test_size, estimator=self.base_classifier, n_features=n_features, n_classifiers=self.n_classifiers, metric_name=self.metric_name, alpha=self.alpha)
-            # , runner=pool.starmap, func_eval=starmap_parallelized_eval)
+            problem = Optimization(X, y, test_size=self.test_size, estimator=self.base_classifier, n_features=n_features, n_classifiers=self.n_classifiers, metric_name=self.metric_name, alpha=self.alpha, cross_validation=cross_validation)
             algorithm = DE(
                 pop_size=self.p_size,
                 sampling=LHS(),
@@ -75,14 +72,14 @@ class SingleObjectiveOptimizationRandomForest(BaseEstimator):
         # It has also been found that setting CR to a low value, e.g., CR=0.2 helps to optimize separable functions since it fosters the search along the coordinate axes. On the contrary, this choice is not effective if parameter dependence is encountered, which frequently occurs in real-world optimization problems rather than artificial test functions. So for parameter dependence, the choice of CR=0.9 is more appropriate.
         # One strategy to introduce adaptive weights (F) during one run. The option allows the same dither to be used in one iteration (‘scalar’) or a different one for each individual (‘vector).
         # Another strategy for adaptive weights (F). Here, only a very small value is added or subtracted to the F used for the crossover for each individual.
-
+        termination = get_termination("n_gen", 10)
         res = minimize(problem,
                        algorithm,
+                       termination,
                        seed=1,
                        save_history=True,
                        # verbose=False)
                        verbose=True)
-        # pool.close()
         self.res_history = res.history
 
         # F returns all Pareto front solutions (quality) in form [-accuracy]
@@ -98,10 +95,8 @@ class SingleObjectiveOptimizationRandomForest(BaseEstimator):
                 feature = False
                 self.selected_features.append(feature)
 
-        # print(list(self.selected_features))
         self.selected_features = np.array_split(self.selected_features, self.n_classifiers)
         # self.selected_features is the vector of selected of features for each model in the ensemble, so bootstrap in this loop ensure different bootstrap data for each model
-        # random_state = 1
         for id, sf in enumerate(self.selected_features):
             if self.bootstrap is True:
                 X_train = X_b[id]
@@ -113,16 +108,26 @@ class SingleObjectiveOptimizationRandomForest(BaseEstimator):
                 candidate = clone(self.base_classifier).fit(X[:, sf], y)
                 # Add candidate to the ensemble
                 self.ensemble.append(candidate)
-        #
-        # # Diversity by DiversityTests
-        # predictions = []
-        # names = []
-        # for mem_ind, member_clf in enumerate(self.ensemble):
-        #     predictions.append(member_clf.predict(self.X[:, self.selected_features[mem_ind]]).tolist())
-        #     names.append(str(mem_ind))
-        # test_class = DiversityTests(predictions, names, self.y)
-        # self.diversities = test_class.get_avg_pairwise(print_flag=False)
-        # print(self.diversities)
+
+        # Pruning based on balanced_accuracy_score
+        if self.pruning:
+            bac_array = []
+            for sf, clf in zip(self.selected_features, self.ensemble):
+                y_pred = clf.predict(X[:, sf])
+                bac = balanced_accuracy_score(y, y_pred)
+                bac_array.append(bac)
+            bac_arg_sorted = np.argsort(bac_array)
+            self.ensemble_arr = np.array(self.ensemble)
+            # The percent of deleted models, ex. 0.3 from 10 models = 30 % models will be deleted
+            pruned = 0.3
+            pruned_indx = int(pruned * len(self.ensemble))
+            selected_models = bac_arg_sorted[pruned_indx:]
+            self.ensemble_arr = self.ensemble_arr[selected_models]
+            self.ensemble = self.ensemble_arr.tolist()
+
+            selected_features_list = [sf.tolist() for sf in self.selected_features]
+            selected_features_arr = np.array(selected_features_list)
+            self.selected_features = selected_features_arr[selected_models, :]
 
     def fit(self, X, y, classes=None):
         self.ensemble = []
