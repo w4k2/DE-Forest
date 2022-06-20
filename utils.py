@@ -142,7 +142,7 @@ def pairs_metrics_multi_grid_all(method_names, data_np, experiment_name, dataset
         metrics.remove("F1score")
 
     fig, axes = plt.subplots(len(metrics), len(ref_methods))
-    fig.subplots_adjust(hspace=0.6, wspace=0.6)
+    fig.subplots_adjust(hspace=0.3, wspace=1)
     # Init/clear ranks
     for index_i, ref_method in enumerate(ref_methods):
         for index_j, metric in enumerate(metrics):
@@ -224,7 +224,7 @@ def pairs_metrics_multi_grid_all(method_names, data_np, experiment_name, dataset
             # Name of the metric only on the left side of the figure
             axes[index_j, 0].text(offset, (index_j*0.15), metric.upper(), fontsize=12, weight="bold")
             # Name of the reference method only on the top of the figure
-            axes[0, index_i].text(index_i, 3, ref_method, fontsize=12, weight="bold")
+            axes[0, index_i].text(index_i, 13, ref_method, fontsize=12, weight="bold")
 
             # Calculate and plot critical difference
             N_of_streams = len(dataset_paths)
@@ -239,7 +239,7 @@ def pairs_metrics_multi_grid_all(method_names, data_np, experiment_name, dataset
 
     if not os.path.exists("results/%s/ranking/" % (experiment_name)):
         os.makedirs("results/%s/ranking/" % (experiment_name))
-    plt.gcf().set_size_inches(9, 9)
+    plt.gcf().set_size_inches(20, 20)
     filepath = "results/%s/ranking/%s" % (experiment_name, filename)
     plt.savefig(filepath + ".png", bbox_inches='tight')
     plt.savefig(filepath + ".eps", format='eps', bbox_inches='tight')
@@ -269,6 +269,7 @@ def pairs_metrics_multi_grid(method_names, data_np, experiment_name, dataset_pat
         metrics.remove("Gmean2")
     if "F1score" in metrics:
         metrics.remove("F1score")
+
     fig, axes = plt.subplots(len(metrics), len(ref_method))
     # print(fig, axes, len(ref_methods))
     fig.subplots_adjust(hspace=0.6, wspace=0.6)
@@ -425,13 +426,14 @@ def diversity_bar_plot(diversity, diversity_measures, methods_ens_alias, experim
     for metric_id, metric in enumerate(diversity_measures):
         fig = plt.figure()
         ax = fig.add_axes([0, 0, 1, 1])
-        ax.bar(methods_ens_alias, diversity[:, metric_id], width=0.4, color=["#2F3441", "#877669"])
+        ax.bar(methods_ens_alias, diversity[:, metric_id], width=0.4, color=["#2F3441", "#877669", "#877669", "#A6B1A2", "#E2B3A9"])
         # , "#877669", "#A6B1A2", "#E2B3A9"])
 
         plt.grid(True, color="silver", linestyle=":", axis='y', which='major')
         plt.ylabel(f"{metric}", fontsize=14)
         plt.xlabel("Methods", fontsize=14)
-        plt.gcf().set_size_inches(3, 3)
+        plt.xticks(rotation="vertical")
+        plt.gcf().set_size_inches(6, 6)
         # Save plot
         filename = "results/%s/diversity_plot/diversity_bar_plot_%s_%s" % (experiment_name, metric, experiment_name)
         if not os.path.exists("results/%s/diversity_plot/" % (experiment_name)):

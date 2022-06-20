@@ -17,13 +17,30 @@ n_proccess = 5
 methods = {
     "SOORF_a1_bac":
         SingleObjectiveOptimizationRandomForest(base_classifier=base_estimator, n_classifiers=10, metric_name="BAC", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222),
+    "SOORF_a1_bac_p":
+        SingleObjectiveOptimizationRandomForest(base_classifier=base_estimator, n_classifiers=10, metric_name="BAC", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222, pruning=True),
+    "SOORF_a1_bac_b":
+        SingleObjectiveOptimizationRandomForest(base_classifier=base_estimator, n_classifiers=10, metric_name="Accuracy", alpha=1, bootstrap=True, n_proccess=n_proccess),
+    "SOORF_a1_bac_bp":
+        SingleObjectiveOptimizationRandomForest(base_classifier=base_estimator, n_classifiers=10, metric_name="BAC", alpha=1, bootstrap=True, n_proccess=n_proccess, random_state_cv=222, pruning=True),
     "RandomFS":
-        RandomFS(base_classifier=base_estimator, n_classifiers=10, bootstrap=False),
+        RandomFS(base_classifier=base_estimator, n_classifiers=10, bootstrap=False, max_features_selected=True),
+    "RandomFS_all_feat":
+        RandomFS(base_classifier=base_estimator, n_classifiers=10, bootstrap=False, max_features_selected=False),
+    "RandomFS_b":
+        RandomFS(base_classifier=base_estimator, n_classifiers=10, bootstrap=True, max_features_selected=True),
+    "RandomFS_b_all_feat":
+        RandomFS(base_classifier=base_estimator, n_classifiers=10, bootstrap=True, max_features_selected=False),
+    "DT":
+        DecisionTreeClassifier(random_state=1234),
+    "RF":
+        RandomForestClassifier(random_state=0, n_estimators=10, bootstrap=False),
+    "RF_b":
+        RandomForestClassifier(random_state=0, n_estimators=10, bootstrap=True),
 }
 
-# method_names = ["RandomFS", "DT", "RF", "DE-Forest", "DE-Forest(BAC)"]
-# method_names = ["RandomFS", "DT", "DE-Forest", "DE-Forest(BAC)"]
-method_names = ["DE-Forest(BAC)cv", "RandomFS"]
+method_names = methods.keys()
+print(method_names)
 
 metrics_alias = [
     "ACC",
@@ -34,7 +51,8 @@ metrics_alias = [
     "Specificity",
     "Precision"]
 
-DATASETS_DIR = "dtest/"
+# DATASETS_DIR = "dtest/"
+DATASETS_DIR = "datasets/"
 # DATASETS_DIR = "d/"
 dataset_paths = []
 for root, _, files in os.walk(DATASETS_DIR):
@@ -63,13 +81,9 @@ for dataset_id, dataset_path in enumerate(dataset_paths):
         for metric_id, metric in enumerate(metrics_alias):
             try:
                 filename = "results/experiment_cv/raw_results/%s/%s/%s.csv" % (metric, dataset_name, clf_name)
-                if clf_name == "SOORF_a1":
-                    filename = "results/experiment_cv/raw_results/%s/%s/%s.csv" % (metric, dataset_name, clf_name)
-                if clf_name == "SOORF_a1_bac":
-                    filename = "results/experiment_cv/raw_results/%s/%s/%s.csv" % (metric, dataset_name, clf_name)
                 if not os.path.isfile(filename):
-                    # print("File not exist - %s" % filename)
-                    continue
+                    print("File not exist - %s" % filename)
+                    # continue
                 scores = np.genfromtxt(filename, delimiter=',', dtype=np.float32)
                 data_np[dataset_id, metric_id, clf_id] = scores
                 mean_score = np.mean(scores)
@@ -79,7 +93,7 @@ for dataset_id, dataset_path in enumerate(dataset_paths):
             except:
                 print("Error loading data!", dataset_name, clf_name, metric)
 
-            # Save process plots of metrics of each dataset
+            # Save process plots of metrics of each dataset - nie wiem co to, nie za bardzo działa, pusty wykres
             # process_plot(dataset_name, metric, methods_names, n_folds, clf_name)
 
             for div_measure_id, div_measure in enumerate(diversity_measures):
@@ -99,7 +113,6 @@ for dataset_id, dataset_path in enumerate(dataset_paths):
 
 diversity_m = np.mean(diversity, axis=2)
 diversity_mean = np.mean(diversity_m, axis=0)
-
 # print(mean_scores)
 
 # All datasets with description in the table
@@ -109,13 +122,8 @@ experiment_name = "experiment_cv"
 # Results in form of one .tex table of each metric
 # result_tables(dataset_paths, metrics_alias, mean_scores, methods, stds, experiment_name)
 
-# for Wilcoxon test with names alpha
-# method_names = ["RandomFS", "DT", "DE-Forest($\\alpha=1$)", "DE-Forest(BAC)"]
-# Wilcoxon ranking grid - statistic test for DE-Forest methoda against all references
-# pairs_metrics_multi_grid(method_names=method_names, data_np=data_np, experiment_name="experiment0", dataset_paths=dataset_paths, metrics=metrics_alias, filename="ex0_ranking_plot_grid", ref_method=[method_names[2]], offset=-14)
-
 # Wilcoxon ranking grid - statistic test for all methods
-# pairs_metrics_multi_grid_all(method_names=method_names, data_np=data_np, experiment_name="experiment0", dataset_paths=dataset_paths, metrics=metrics_alias, filename="ex0_ranking_plot_grid_all", ref_methods=[method_names[2], method_names[3]], offset=-14)
+# pairs_metrics_multi_grid_all(method_names=method_names, data_np=data_np, experiment_name=experiment_name, dataset_paths=dataset_paths, metrics=metrics_alias, filename="ex_cv_wilcoxon_all", ref_methods=list(method_names)[0:4], offset=-30)
 
 # Diversity bar Plotting
-diversity_bar_plot(diversity_mean, diversity_measures, method_names, experiment_name="experiment_cv")
+# diversity_bar_plot(diversity_mean, diversity_measures, method_names, experiment_name=experiment_name)
