@@ -1,6 +1,7 @@
 import numpy as np
 from sklearn.base import clone
-from sklearn.metrics import accuracy_score, balanced_accuracy_score
+from sklearn.metrics import accuracy_score, balanced_accuracy_score, roc_auc_score
+from imblearn.metrics import geometric_mean_score
 from scipy.stats import mode
 from pymoo.core.problem import ElementwiseProblem
 
@@ -67,6 +68,10 @@ class BootstrapOptimization(ElementwiseProblem):
             self.metric = accuracy_score(self.y, y_pred)
         elif self.metric_name == "BAC":
             self.metric = balanced_accuracy_score(self.y, y_pred)
+        elif self.metric_name == "gm":
+            self.metric = geometric_mean_score(self.y, y_pred)
+        elif self.metric_name == "AUC":
+            self.metric = roc_auc_score(self.y, y_pred)
         return self.metric
 
     def _evaluate(self, x, out, *args, **kwargs):

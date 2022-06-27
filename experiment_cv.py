@@ -27,28 +27,36 @@ Datasets are from KEEL repository.
 base_estimator = DecisionTreeClassifier(random_state=1234)
 n_proccess = 4
 methods = {
-    "SOORF_a1_bac":
-        SingleObjectiveOptimizationRandomForest(base_classifier=base_estimator, n_classifiers=10, metric_name="BAC", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222),
-    "SOORF_a1_bac_p":
-        SingleObjectiveOptimizationRandomForest(base_classifier=base_estimator, n_classifiers=10, metric_name="BAC", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222, pruning=True),
-    "SOORF_a1_bac_b":
-        SingleObjectiveOptimizationRandomForest(base_classifier=base_estimator, n_classifiers=10, metric_name="Accuracy", alpha=1, bootstrap=True, n_proccess=n_proccess),
-    "SOORF_a1_bac_bp":
-        SingleObjectiveOptimizationRandomForest(base_classifier=base_estimator, n_classifiers=10, metric_name="BAC", alpha=1, bootstrap=True, n_proccess=n_proccess, random_state_cv=222, pruning=True),
-    "RandomFS":
-        RandomFS(base_classifier=base_estimator, n_classifiers=10, bootstrap=False, max_features_selected=True),
-    "RandomFS_all_feat":
-        RandomFS(base_classifier=base_estimator, n_classifiers=10, bootstrap=False, max_features_selected=False),
-    "RandomFS_b":
-        RandomFS(base_classifier=base_estimator, n_classifiers=10, bootstrap=True, max_features_selected=True),
-    "RandomFS_b_all_feat":
-        RandomFS(base_classifier=base_estimator, n_classifiers=10, bootstrap=True, max_features_selected=False),
-    "DT":
-        DecisionTreeClassifier(random_state=1234),
-    "RF":
-        RandomForestClassifier(random_state=0, n_estimators=10, bootstrap=False),
-    "RF_b":
-        RandomForestClassifier(random_state=0, n_estimators=10, bootstrap=True),
+    "SOORF_a1_gm":
+        SingleObjectiveOptimizationRandomForest(base_classifier=base_estimator, n_classifiers=10, metric_name="gm", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222),
+    "SOORF_a1_gm_b":
+        SingleObjectiveOptimizationRandomForest(base_classifier=base_estimator, n_classifiers=10, metric_name="gm", alpha=1, bootstrap=True, n_proccess=n_proccess, random_state_cv=222),
+    "SOORF_a1_AUC":
+        SingleObjectiveOptimizationRandomForest(base_classifier=base_estimator, n_classifiers=10, metric_name="AUC", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222),
+    "SOORF_a1_AUC_b":
+        SingleObjectiveOptimizationRandomForest(base_classifier=base_estimator, n_classifiers=10, metric_name="AUC", alpha=1, bootstrap=True, n_proccess=n_proccess, random_state_cv=222),
+    # "SOORF_a1_bac":
+    #     SingleObjectiveOptimizationRandomForest(base_classifier=base_estimator, n_classifiers=10, metric_name="BAC", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222),
+    # "SOORF_a1_bac_p":
+    #     SingleObjectiveOptimizationRandomForest(base_classifier=base_estimator, n_classifiers=10, metric_name="BAC", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222, pruning=True),
+    # "SOORF_a1_bac_b":
+    #     SingleObjectiveOptimizationRandomForest(base_classifier=base_estimator, n_classifiers=10, metric_name="Accuracy", alpha=1, bootstrap=True, n_proccess=n_proccess),
+    # "SOORF_a1_bac_bp":
+    #     SingleObjectiveOptimizationRandomForest(base_classifier=base_estimator, n_classifiers=10, metric_name="BAC", alpha=1, bootstrap=True, n_proccess=n_proccess, random_state_cv=222, pruning=True),
+    # "RandomFS":
+    #     RandomFS(base_classifier=base_estimator, n_classifiers=10, bootstrap=False, max_features_selected=True),
+    # "RandomFS_all_feat":
+    #     RandomFS(base_classifier=base_estimator, n_classifiers=10, bootstrap=False, max_features_selected=False),
+    # "RandomFS_b":
+    #     RandomFS(base_classifier=base_estimator, n_classifiers=10, bootstrap=True, max_features_selected=True),
+    # "RandomFS_b_all_feat":
+    #     RandomFS(base_classifier=base_estimator, n_classifiers=10, bootstrap=True, max_features_selected=False),
+    # "DT":
+    #     DecisionTreeClassifier(random_state=1234),
+    # "RF":
+    #     RandomForestClassifier(random_state=0, n_estimators=10, bootstrap=False),
+    # "RF_b":
+    #     RandomForestClassifier(random_state=0, n_estimators=10, bootstrap=True),
 }
 
 # Repeated Stratified K-Fold cross validator

@@ -1,6 +1,7 @@
 import numpy as np
 from sklearn.base import clone
-from sklearn.metrics import accuracy_score, balanced_accuracy_score
+from sklearn.metrics import accuracy_score, balanced_accuracy_score, roc_auc_score
+from imblearn.metrics import geometric_mean_score
 from scipy.stats import mode
 from pymoo.core.problem import ElementwiseProblem
 
@@ -69,6 +70,10 @@ class Optimization(ElementwiseProblem):
                 scores[fold_id] = accuracy_score(y_test, y_pred)
             elif self.metric_name == "BAC":
                 scores[fold_id] = balanced_accuracy_score(y_test, y_pred)
+            elif self.metric_name == "gm":
+                scores[fold_id] = geometric_mean_score(y_test, y_pred)
+            elif self.metric_name == "AUC":
+                scores[fold_id] = roc_auc_score(y_test, y_pred)
         return np.mean(scores, axis=0)
 
     def _evaluate(self, x, out, *args, **kwargs):
