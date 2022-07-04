@@ -224,7 +224,7 @@ def pairs_metrics_multi_grid_all(method_names, data_np, experiment_name, dataset
             # Name of the metric only on the left side of the figure
             axes[index_j, 0].text(offset, (index_j*0.15), metric.upper(), fontsize=12, weight="bold")
             # Name of the reference method only on the top of the figure
-            axes[0, index_i].text(index_i, 13, ref_method, fontsize=12, weight="bold")
+            axes[0, index_i].text(index_i, 16, ref_method, fontsize=12, weight="bold")
 
             # Calculate and plot critical difference
             N_of_streams = len(dataset_paths)
@@ -239,7 +239,7 @@ def pairs_metrics_multi_grid_all(method_names, data_np, experiment_name, dataset
 
     if not os.path.exists("results/%s/ranking/" % (experiment_name)):
         os.makedirs("results/%s/ranking/" % (experiment_name))
-    plt.gcf().set_size_inches(20, 20)
+    plt.gcf().set_size_inches(40, 20)
     filepath = "results/%s/ranking/%s" % (experiment_name, filename)
     plt.savefig(filepath + ".png", bbox_inches='tight')
     plt.savefig(filepath + ".eps", format='eps', bbox_inches='tight')

@@ -15,6 +15,14 @@ base_estimator = DecisionTreeClassifier(random_state=1234)
 # Parallelization
 n_proccess = 5
 methods = {
+    "SOORF_a1_gm":
+        SingleObjectiveOptimizationRandomForest(base_classifier=base_estimator, n_classifiers=10, metric_name="gm", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222),
+    "SOORF_a1_gm_b":
+        SingleObjectiveOptimizationRandomForest(base_classifier=base_estimator, n_classifiers=10, metric_name="gm", alpha=1, bootstrap=True, n_proccess=n_proccess, random_state_cv=222),
+    "SOORF_a1_AUC":
+        SingleObjectiveOptimizationRandomForest(base_classifier=base_estimator, n_classifiers=10, metric_name="AUC", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222),
+    "SOORF_a1_AUC_b":
+        SingleObjectiveOptimizationRandomForest(base_classifier=base_estimator, n_classifiers=10, metric_name="AUC", alpha=1, bootstrap=True, n_proccess=n_proccess, random_state_cv=222),
     "SOORF_a1_bac":
         SingleObjectiveOptimizationRandomForest(base_classifier=base_estimator, n_classifiers=10, metric_name="BAC", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222),
     "SOORF_a1_bac_p":
@@ -52,8 +60,8 @@ metrics_alias = [
     "Precision"]
 
 # DATASETS_DIR = "dtest/"
-DATASETS_DIR = "datasets/"
-# DATASETS_DIR = "d/"
+# DATASETS_DIR = "datasets/"
+DATASETS_DIR = "dwithauc/"
 dataset_paths = []
 for root, _, files in os.walk(DATASETS_DIR):
     print(root, files)
@@ -123,7 +131,7 @@ experiment_name = "experiment_cv"
 # result_tables(dataset_paths, metrics_alias, mean_scores, methods, stds, experiment_name)
 
 # Wilcoxon ranking grid - statistic test for all methods
-# pairs_metrics_multi_grid_all(method_names=method_names, data_np=data_np, experiment_name=experiment_name, dataset_paths=dataset_paths, metrics=metrics_alias, filename="ex_cv_wilcoxon_all", ref_methods=list(method_names)[0:4], offset=-30)
+pairs_metrics_multi_grid_all(method_names=method_names, data_np=data_np, experiment_name=experiment_name, dataset_paths=dataset_paths, metrics=metrics_alias, filename="ex_cv_wilcoxon_all", ref_methods=list(method_names)[0:8], offset=-30)
 
 # Diversity bar Plotting
 # diversity_bar_plot(diversity_mean, diversity_measures, method_names, experiment_name=experiment_name)

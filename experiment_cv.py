@@ -29,12 +29,12 @@ n_proccess = 4
 methods = {
     "SOORF_a1_gm":
         SingleObjectiveOptimizationRandomForest(base_classifier=base_estimator, n_classifiers=10, metric_name="gm", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222),
-    "SOORF_a1_gm_b":
-        SingleObjectiveOptimizationRandomForest(base_classifier=base_estimator, n_classifiers=10, metric_name="gm", alpha=1, bootstrap=True, n_proccess=n_proccess, random_state_cv=222),
-    "SOORF_a1_AUC":
-        SingleObjectiveOptimizationRandomForest(base_classifier=base_estimator, n_classifiers=10, metric_name="AUC", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222),
-    "SOORF_a1_AUC_b":
-        SingleObjectiveOptimizationRandomForest(base_classifier=base_estimator, n_classifiers=10, metric_name="AUC", alpha=1, bootstrap=True, n_proccess=n_proccess, random_state_cv=222),
+    # "SOORF_a1_gm_b":
+    #     SingleObjectiveOptimizationRandomForest(base_classifier=base_estimator, n_classifiers=10, metric_name="gm", alpha=1, bootstrap=True, n_proccess=n_proccess, random_state_cv=222),
+    # "SOORF_a1_AUC":
+    #     SingleObjectiveOptimizationRandomForest(base_classifier=base_estimator, n_classifiers=10, metric_name="AUC", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222),
+    # "SOORF_a1_AUC_b":
+    #     SingleObjectiveOptimizationRandomForest(base_classifier=base_estimator, n_classifiers=10, metric_name="AUC", alpha=1, bootstrap=True, n_proccess=n_proccess, random_state_cv=222),
     # "SOORF_a1_bac":
     #     SingleObjectiveOptimizationRandomForest(base_classifier=base_estimator, n_classifiers=10, metric_name="BAC", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222),
     # "SOORF_a1_bac_p":
@@ -65,8 +65,8 @@ n_repeats = 5
 rskf = RepeatedStratifiedKFold(n_splits=n_splits, n_repeats=n_repeats, random_state=111)
 n_folds = n_splits * n_repeats
 
-# DATASETS_DIR = "dtest/"
-DATASETS_DIR = "datasets/"
+DATASETS_DIR = "dtest/"
+# DATASETS_DIR = "datasets/"
 dataset_paths = []
 for root, _, files in os.walk(DATASETS_DIR):
     print(root, files)
@@ -170,7 +170,7 @@ def compute(dataset_id, dataset_path):
 
 
 # Multithread; n_jobs - number of threads, where -1 all threads, safe for my computer 2
-Parallel(n_jobs=-1)(
+Parallel(n_jobs=1)(
                 delayed(compute)
                 (dataset_id, dataset_path)
                 for dataset_id, dataset_path in enumerate(dataset_paths)
