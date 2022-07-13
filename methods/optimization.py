@@ -7,7 +7,7 @@ from pymoo.core.problem import ElementwiseProblem
 
 
 class Optimization(ElementwiseProblem):
-    def __init__(self, X, y, test_size, estimator, n_features, metric_name, alpha, cross_validation, objectives=1, n_classifiers=10, **kwargs):
+    def __init__(self, X, y, test_size, estimator, n_features, metric_name, alpha, cross_validation, runner, func_eval, objectives=1, n_classifiers=10, **kwargs):
         self.estimator = estimator
         self.test_size = test_size
         self.objectives = objectives
@@ -26,7 +26,7 @@ class Optimization(ElementwiseProblem):
         xu_binary = [1] * n_variable
 
         super().__init__(n_var=n_variable, n_obj=objectives,
-                         n_constr=0, xl=xl_binary, xu=xu_binary, **kwargs)
+                         n_constr=0, xl=xl_binary, xu=xu_binary, runner=runner, func_eval=func_eval, **kwargs)
 
     def predict(self, X, selected_features, ensemble):
         predictions = np.array([member_clf.predict(X[:, sf]) for member_clf, sf in zip(ensemble, selected_features)])

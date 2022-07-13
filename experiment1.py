@@ -27,7 +27,9 @@ Datasets are from KEEL repository.
 
 
 base_estimator = DecisionTreeClassifier(random_state=1234)
-n_proccess = 4
+n_proccess = 8
+# safe for my computer
+# n_proccess = 5
 methods = {
     "DE_Forest_gm":
         DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="gm", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222),
@@ -35,30 +37,30 @@ methods = {
         DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="AUC", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222),
     "DE_Forest_bac":
         DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="BAC", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222),
-    # "DE_Forest_a1_gm_b":
-    #     DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="gm", alpha=1, bootstrap=True, n_proccess=n_proccess, random_state_cv=222),
-    # "DE_Forest_a1_AUC_b":
-    #     DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="AUC", alpha=1, bootstrap=True, n_proccess=n_proccess, random_state_cv=222),
+    "DE_Forest_gm_b":
+        DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="gm", alpha=1, bootstrap=True, n_proccess=n_proccess, random_state_cv=222),
+    "DE_Forest_AUC_b":
+        DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="AUC", alpha=1, bootstrap=True, n_proccess=n_proccess, random_state_cv=222),
+    "DE_Forest_bac_b":
+        DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="Accuracy", alpha=1, bootstrap=True, n_proccess=n_proccess),
     # "DE_Forest_a1_bac_p":
     #     DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="BAC", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222, pruning=True),
-    # "DE_Forest_a1_bac_b":
-    #     DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="Accuracy", alpha=1, bootstrap=True, n_proccess=n_proccess),
     # "DE_Forest_a1_bac_bp":
     #     DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="BAC", alpha=1, bootstrap=True, n_proccess=n_proccess, random_state_cv=222, pruning=True),
     "RandomFS":
         RandomFS(base_classifier=base_estimator, n_classifiers=10, bootstrap=False, max_features_selected=True),
     # "RandomFS_all_feat":
     #     RandomFS(base_classifier=base_estimator, n_classifiers=10, bootstrap=False, max_features_selected=False),
-    # "RandomFS_b":
-    #     RandomFS(base_classifier=base_estimator, n_classifiers=10, bootstrap=True, max_features_selected=True),
+    "RandomFS_b":
+        RandomFS(base_classifier=base_estimator, n_classifiers=10, bootstrap=True, max_features_selected=True),
     # "RandomFS_b_all_feat":
-    #     RandomFS(base_classifier=base_estimator, n_classifiers=10, bootstrap=True, max_features_selected=False),
+        # RandomFS(base_classifier=base_estimator, n_classifiers=10, bootstrap=True, max_features_selected=False),
     "DT":
         DecisionTreeClassifier(random_state=1234),
     "RF":
         RandomForestClassifier(random_state=0, n_estimators=10, bootstrap=False),
-    # "RF_b":
-    #     RandomForestClassifier(random_state=0, n_estimators=10, bootstrap=True),
+    "RF_b":
+        RandomForestClassifier(random_state=0, n_estimators=10, bootstrap=True),
 }
 
 # Repeated Stratified K-Fold cross validator
@@ -172,7 +174,7 @@ def compute(dataset_id, dataset_path):
 
 
 # Multithread; n_jobs - number of threads, where -1 all threads, safe for my computer 2
-Parallel(n_jobs=1)(
+Parallel(n_jobs=-1)(
                 delayed(compute)
                 (dataset_id, dataset_path)
                 for dataset_id, dataset_path in enumerate(dataset_paths)
