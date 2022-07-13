@@ -1,10 +1,9 @@
 # DE-Forest - Differential Evolution Forest
 
-1. Datasets: (datasets, dbig, dsmall) from KEEL repository.
-2. [EnsembleDiversityTests](https://github.com/kbogas/EnsembleDiversityTests)
-3. Methods:
-   - SOORF - proposed method DE-Forest
+1. Datasets: from KEEL repository, binary class, imbalanced
+2. Methods:
+   - DE-Forest - proposed method
    - RandomFS - native implementation of Random Forest
    - optimization
    - bootstrap_optimization
-4. Results: results of pre-experiments and the main experiment in form of raw results, tables of average metrics, Wilcoxon ranking, diversity results.
+4. Results: results of experiments in form of raw results, tables of average metrics, Wilcoxon ranking, diversity results.

@@ -1,13 +1,13 @@
 import numpy as np
-from sklearn.model_selection import train_test_split
 from sklearn.base import clone
-from sklearn.metrics import accuracy_score, balanced_accuracy_score
+from sklearn.metrics import accuracy_score, balanced_accuracy_score, roc_auc_score
+from imblearn.metrics import geometric_mean_score
 from scipy.stats import mode
 from pymoo.core.problem import ElementwiseProblem
 
 
 class Optimization(ElementwiseProblem):
-    def __init__(self, X, y, test_size, estimator, n_features, metric_name, alpha, objectives=1, n_classifiers=10, **kwargs):
+    def __init__(self, X, y, test_size, estimator, n_features, metric_name, alpha, cross_validation, objectives=1, n_classifiers=10, **kwargs):
         self.estimator = estimator
         self.test_size = test_size
         self.objectives = objectives
@@ -18,12 +18,7 @@ class Optimization(ElementwiseProblem):
         self.classes_, _ = np.unique(self.y, return_inverse=True)
         self.metric_name = metric_name
         self.alpha = alpha
-
-        self.test_size = 0
-        if self.test_size != 0:
-            self.X_train, self.X_test, self.y_train, self.y_test = train_test_split(self.X, self.y, test_size=self.test_size, stratify=self.y)
-        else:
-            self.X_train, self.X_test, self.y_train, self.y_test = np.copy(self.X), np.copy(self.X), np.copy(self.y), np.copy(self.y)
+        self.cross_validation = cross_validation
 
         # Lower and upper bounds for x - 1d array with length equal to number of variable
         n_variable = self.n_classifiers * self.n_features
@@ -49,31 +44,43 @@ class Optimization(ElementwiseProblem):
             else:
                 feature = False
                 selected_features.append(feature)
+        scores = np.zeros((self.cross_validation.get_n_splits()))
         selected_features = np.array_split(selected_features, self.n_classifiers)
-        for sf in selected_features:
-            # If at least one element in sf is True
-            if True in sf:
-                candidate = clone(self.estimator).fit(self.X_train[:, sf], self.y_train)
-                ensemble.append(candidate)
+        for fold_id, (train, test) in enumerate(self.cross_validation.split(self.X, self.y)):
+            for sf in selected_features:
+                # If at least one element in sf is True
+                if True in sf:
+                    X_train = self.X[train]
+                    y_train = self.y[train]
+                    X_test = self.X[test]
+                    y_test = self.y[test]
+                    candidate = clone(self.estimator)
+                    candidate.fit(X_train[:, sf], y_train)
+                    ensemble.append(candidate)
 
-        # If at least one element in selected_features is True
-        for index in range(self.n_classifiers):
-            if True in selected_features[index]:
-                pass
-            else:
-                self.metric = [0, 0]
-                return self.metric
-        y_pred = self.predict(self.X_test, selected_features, ensemble)
-        if self.metric_name == "Accuracy":
-            self.metric = [accuracy_score(self.y_test, y_pred)]
-        elif self.metric_name == "BAC":
-            self.metric = [balanced_accuracy_score(self.y_test, y_pred)]
-        return self.metric
+            for index in range(self.n_classifiers):
+                # If at least one element in selected_features is True
+                if True in selected_features[index]:
+                    pass
+                else:
+                    scores = [0, 0]
+                    return np.mean(scores, axis=0)
+            y_pred = self.predict(X_test, selected_features, ensemble)
+            if self.metric_name == "Accuracy":
+                scores[fold_id] = accuracy_score(y_test, y_pred)
+            elif self.metric_name == "BAC":
+                scores[fold_id] = balanced_accuracy_score(y_test, y_pred)
+            elif self.metric_name == "gm":
+                scores[fold_id] = geometric_mean_score(y_test, y_pred)
+            elif self.metric_name == "AUC":
+                scores[fold_id] = roc_auc_score(y_test, y_pred)
+        return np.mean(scores, axis=0)
 
     def _evaluate(self, x, out, *args, **kwargs):
         scores = self.validation(x)
+
         # Function F is always minimize, but the minus sign (-) before F means maximize
-        f1 = -1 * scores[0]
+        f1 = -1 * scores
         out["F"] = f1
 
         # Function constraint to select specific numbers of features:

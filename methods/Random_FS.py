@@ -4,7 +4,7 @@ from sklearn.utils import resample
 from scipy.stats import mode
 from random import choice
 import math
-from utils_diversity import calc_diversity_measures
+from utils.utils_diversity import calc_diversity_measures
 # import sys
 
 # Setup to print all dataset array
