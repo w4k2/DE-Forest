@@ -2,7 +2,7 @@ import os
 import numpy as np
 import warnings
 from pathlib import Path
-from load_datasets import load_dataset
+from .load_datasets import load_dataset
 
 
 warnings.filterwarnings("ignore")

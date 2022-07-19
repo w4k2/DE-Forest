@@ -1,6 +1,8 @@
 import os
 import numpy as np
 import matplotlib.pyplot as plt
+from .load_datasets import load_dataset
+from .datasets_table_description import calc_imbalance_ratio
 
 
 def optimization_plot(res_history, y_label, dataset_name, filename):
@@ -71,3 +73,68 @@ def diversity_bar_plot(diversity, diversity_measures, methods_ens_alias, experim
         plt.savefig(filename+".eps", format='eps', bbox_inches='tight')
         plt.clf()
         plt.close()
+
+
+# def result_tables(dataset_paths, metrics_alias, mean_scores, methods, stds, experiment_name):
+#     imbalance_ratios = []
+#     for dataset_path in dataset_paths:
+#         X, y = load_dataset(dataset_path)
+#         IR = calc_imbalance_ratio(X, y)
+#         imbalance_ratios.append(IR)
+#     IR_argsorted = np.argsort(imbalance_ratios)
+#     for metric_id, metric in enumerate(metrics_alias):
+#         if not os.path.exists("results/%s/tables/" % experiment_name):
+#             os.makedirs("results/%s/tables/" % experiment_name)
+#         with open("results/%s/tables/results_%s_%s.tex" % (experiment_name, metric, experiment_name), "w+") as file:
+#             for id, arg in enumerate(IR_argsorted):
+#                 id += 1
+#                 line = "%d" % (id)
+#                 line_values = []
+#                 line_values = mean_scores[arg, metric_id, :]
+#                 max_value = np.amax(line_values)
+#                 for clf_id, clf_name in enumerate(methods):
+#                     if mean_scores[arg, metric_id, clf_id] == max_value:
+#                         line += " & \\textbf{%0.3f $\\pm$ %0.3f}" % (mean_scores[arg, metric_id, clf_id], stds[arg, metric_id, clf_id])
+#                     else:
+#                         line += " & %0.3f $\\pm$ %0.3f" % (mean_scores[arg, metric_id, clf_id], stds[arg, metric_id, clf_id])
+#                 line += " \\\\"
+#                 print(line, file=file)
+
+
+def result_tables(dataset_paths, metrics_alias, mean_scores, methods, stds, experiment_name):
+    for metric_id, metric in enumerate(metrics_alias):
+        if not os.path.exists("results/%s/tables/" % experiment_name):
+            os.makedirs("results/%s/tables/" % experiment_name)
+        with open("results/%s/tables/results_%s_%s.tex" % (experiment_name, metric, experiment_name), "w+") as file:
+            print("\\begin{table}[!ht]", file=file)
+            print("\\centering", file=file)
+            print("\\caption{%s}" % (metric), file=file)
+            columns = "r"
+            for i in methods:
+                columns += " c"
+
+            print("\\scalebox{0.4}{", file=file)
+            print("\\begin{tabular}{%s}" % columns, file=file)
+            print("\\hline", file=file)
+            columns_names = "\\textbf{Dataset name} &"
+            for name in methods:
+                name = name.replace("_", "-")
+                columns_names += f'\\textbf{{{name}}} & '
+            columns_names = columns_names[:-3]
+            columns_names += "\\\\"
+            print(columns_names, file=file)
+            print("\\hline", file=file)
+            for dataset_id, dataset_path in enumerate(dataset_paths):
+                line = "$%s$" % (dataset_path)
+                line_values = []
+                line_values = mean_scores[dataset_id, metric_id, :]
+                max_value = np.amax(line_values)
+                for clf_id, clf_name in enumerate(methods):
+                    if mean_scores[dataset_id, metric_id, clf_id] == max_value:
+                        line += " & \\textbf{%0.3f $\\pm$ %0.3f}" % (mean_scores[dataset_id, metric_id, clf_id], stds[dataset_id, metric_id, clf_id])
+                    else:
+                        line += " & %0.3f $\\pm$ %0.3f" % (mean_scores[dataset_id, metric_id, clf_id], stds[dataset_id, metric_id, clf_id])
+                line += " \\\\"
+                print(line, file=file)
+            print("\\end{tabular}}", file=file)
+            print("\\end{table}", file=file)

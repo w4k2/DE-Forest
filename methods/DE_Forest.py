@@ -84,8 +84,8 @@ class DifferentialEvolutionForest(BaseEstimator):
                        # termination,
                        seed=1,
                        save_history=True,
-                       # verbose=False)
-                       verbose=True)
+                       verbose=False)
+        # verbose=True)
         self.res_history = res.history
 
         # F returns all Pareto front solutions (quality) in form [-accuracy]

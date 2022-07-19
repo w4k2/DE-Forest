@@ -5,42 +5,42 @@ from pathlib import Path
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.tree import DecisionTreeClassifier
 
-from methods.SOORF_cv import SingleObjectiveOptimizationRandomForest
+from methods.DE_Forest import DifferentialEvolutionForest
 from methods.Random_FS import RandomFS
-from utils.datasets_table_description import make_description_table
+# from utils.datasets_table_description import make_description_table
 from utils.wilcoxon_ranking import pairs_metrics_multi_grid_all, pairs_metrics_multi_grid
-from utils.plots import process_plot, diversity_bar_plot
+from utils.plots import process_plot, diversity_bar_plot, result_tables
 
 
 base_estimator = DecisionTreeClassifier(random_state=1234)
 
 # Parallelization
-n_proccess = 5
+n_proccess = 16
 methods = {
-    "SOORF_a1_gm":
-        SingleObjectiveOptimizationRandomForest(base_classifier=base_estimator, n_classifiers=10, metric_name="gm", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222),
-    "SOORF_a1_gm_b":
-        SingleObjectiveOptimizationRandomForest(base_classifier=base_estimator, n_classifiers=10, metric_name="gm", alpha=1, bootstrap=True, n_proccess=n_proccess, random_state_cv=222),
-    "SOORF_a1_AUC":
-        SingleObjectiveOptimizationRandomForest(base_classifier=base_estimator, n_classifiers=10, metric_name="AUC", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222),
-    "SOORF_a1_AUC_b":
-        SingleObjectiveOptimizationRandomForest(base_classifier=base_estimator, n_classifiers=10, metric_name="AUC", alpha=1, bootstrap=True, n_proccess=n_proccess, random_state_cv=222),
-    "SOORF_a1_bac":
-        SingleObjectiveOptimizationRandomForest(base_classifier=base_estimator, n_classifiers=10, metric_name="BAC", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222),
-    "SOORF_a1_bac_p":
-        SingleObjectiveOptimizationRandomForest(base_classifier=base_estimator, n_classifiers=10, metric_name="BAC", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222, pruning=True),
-    "SOORF_a1_bac_b":
-        SingleObjectiveOptimizationRandomForest(base_classifier=base_estimator, n_classifiers=10, metric_name="Accuracy", alpha=1, bootstrap=True, n_proccess=n_proccess),
-    "SOORF_a1_bac_bp":
-        SingleObjectiveOptimizationRandomForest(base_classifier=base_estimator, n_classifiers=10, metric_name="BAC", alpha=1, bootstrap=True, n_proccess=n_proccess, random_state_cv=222, pruning=True),
+    "DE_Forest_gm":
+        DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="gm", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222),
+    "DE_Forest_AUC":
+        DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="AUC", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222),
+    "DE_Forest_bac":
+        DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="BAC", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222),
+    "DE_Forest_gm_b":
+        DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="gm", alpha=1, bootstrap=True, n_proccess=n_proccess, random_state_cv=222),
+    "DE_Forest_AUC_b":
+        DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="AUC", alpha=1, bootstrap=True, n_proccess=n_proccess, random_state_cv=222),
+    "DE_Forest_bac_b":
+        DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="Accuracy", alpha=1, bootstrap=True, n_proccess=n_proccess),
+    # "DE_Forest_a1_bac_p":
+    #     DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="BAC", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222, pruning=True),
+    # "DE_Forest_a1_bac_bp":
+    #     DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="BAC", alpha=1, bootstrap=True, n_proccess=n_proccess, random_state_cv=222, pruning=True),
     "RandomFS":
         RandomFS(base_classifier=base_estimator, n_classifiers=10, bootstrap=False, max_features_selected=True),
-    "RandomFS_all_feat":
-        RandomFS(base_classifier=base_estimator, n_classifiers=10, bootstrap=False, max_features_selected=False),
+    # "RandomFS_all_feat":
+    #     RandomFS(base_classifier=base_estimator, n_classifiers=10, bootstrap=False, max_features_selected=False),
     "RandomFS_b":
         RandomFS(base_classifier=base_estimator, n_classifiers=10, bootstrap=True, max_features_selected=True),
-    "RandomFS_b_all_feat":
-        RandomFS(base_classifier=base_estimator, n_classifiers=10, bootstrap=True, max_features_selected=False),
+    # "RandomFS_b_all_feat":
+        # RandomFS(base_classifier=base_estimator, n_classifiers=10, bootstrap=True, max_features_selected=False),
     "DT":
         DecisionTreeClassifier(random_state=1234),
     "RF":
@@ -53,7 +53,7 @@ method_names = methods.keys()
 print(method_names)
 
 metrics_alias = [
-    "ACC",
+    # "ACC",
     "BAC",
     "Gmean",
     "F1score",
@@ -63,7 +63,7 @@ metrics_alias = [
 
 # DATASETS_DIR = "dtest/"
 # DATASETS_DIR = "datasets/"
-DATASETS_DIR = "dwithauc/"
+DATASETS_DIR = "ds10/"
 dataset_paths = []
 for root, _, files in os.walk(DATASETS_DIR):
     print(root, files)
@@ -90,7 +90,7 @@ for dataset_id, dataset_path in enumerate(dataset_paths):
     for clf_id, clf_name in enumerate(methods):
         for metric_id, metric in enumerate(metrics_alias):
             try:
-                filename = "results/experiment_cv/raw_results/%s/%s/%s.csv" % (metric, dataset_name, clf_name)
+                filename = "results/experiment1/raw_results/%s/%s/%s.csv" % (metric, dataset_name, clf_name)
                 if not os.path.isfile(filename):
                     print("File not exist - %s" % filename)
                     # continue
@@ -108,7 +108,7 @@ for dataset_id, dataset_path in enumerate(dataset_paths):
 
             for div_measure_id, div_measure in enumerate(diversity_measures):
                 try:
-                    filename = "results/experiment_cv/diversity_results/%s/%s_diversity.csv" % (dataset_name, clf_name)
+                    filename = "results/experiment1/diversity_results/%s/%s_diversity.csv" % (dataset_name, clf_name)
                     if not os.path.isfile(filename):
                         # print("File not exist - %s" % filename)
                         continue
@@ -128,12 +128,12 @@ diversity_mean = np.mean(diversity_m, axis=0)
 # All datasets with description in the table
 # make_description_table()
 
-experiment_name = "experiment_cv"
+experiment_name = "experiment1"
 # Results in form of one .tex table of each metric
-# result_tables(dataset_paths, metrics_alias, mean_scores, methods, stds, experiment_name)
+result_tables(dataset_paths, metrics_alias, mean_scores, methods, stds, experiment_name)
 
 # Wilcoxon ranking grid - statistic test for all methods
-pairs_metrics_multi_grid_all(method_names=method_names, data_np=data_np, experiment_name=experiment_name, dataset_paths=dataset_paths, metrics=metrics_alias, filename="ex_cv_wilcoxon_all", ref_methods=list(method_names)[0:8], offset=-30)
+# pairs_metrics_multi_grid_all(method_names=method_names, data_np=data_np, experiment_name=experiment_name, dataset_paths=dataset_paths, metrics=metrics_alias, filename="ex1_wilcoxon_all", ref_methods=list(method_names)[0:6], offset=-10)
 
 # Diversity bar Plotting
 # diversity_bar_plot(diversity_mean, diversity_measures, method_names, experiment_name=experiment_name)

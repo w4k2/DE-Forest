@@ -70,8 +70,8 @@ rskf = RepeatedStratifiedKFold(n_splits=n_splits, n_repeats=n_repeats, random_st
 n_folds = n_splits * n_repeats
 
 # DATASETS_DIR = "dtest/"
-DATASETS_DIR = "ds10/"
-# DATASETS_DIR = "datasets/"
+# DATASETS_DIR = "ds10/"
+DATASETS_DIR = "datasets/"
 dataset_paths = []
 for root, _, files in os.walk(DATASETS_DIR):
     for filename in filter(lambda _: _.endswith('.dat'), files):
