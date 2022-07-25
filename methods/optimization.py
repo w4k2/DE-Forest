@@ -73,7 +73,7 @@ class Optimization(ElementwiseProblem):
             elif self.metric_name == "gm":
                 scores[fold_id] = geometric_mean_score(y_test, y_pred)
             elif self.metric_name == "AUC":
-                scores[fold_id] = roc_auc_score(y_test, y_pred)
+                scores[fold_id] = roc_auc_score(y_test, y_pred, multi_class='ovo')
         return np.mean(scores, axis=0)
 
     def _evaluate(self, x, out, *args, **kwargs):
