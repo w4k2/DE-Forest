@@ -7,7 +7,8 @@ from pymoo.core.problem import ElementwiseProblem
 
 
 class BootstrapOptimization(ElementwiseProblem):
-    def __init__(self, X, y, X_b, y_b, test_size, estimator, n_features, metric_name, alpha, runner, func_eval, objectives=1, n_classifiers=10, **kwargs):
+    def __init__(self, X, y, X_b, y_b, test_size, estimator, n_features, metric_name, alpha, objectives=1, n_classifiers=10, **kwargs):
+        # runner, func_eval,
         self.estimator = estimator
         self.test_size = test_size
         self.objectives = objectives
@@ -27,7 +28,8 @@ class BootstrapOptimization(ElementwiseProblem):
         xu_binary = [1] * n_variable
 
         super().__init__(n_var=n_variable, n_obj=objectives,
-                         n_constr=0, xl=xl_binary, xu=xu_binary, runner=runner, func_eval=func_eval, **kwargs)
+                         n_constr=0, xl=xl_binary, xu=xu_binary, **kwargs)
+        # runner=runner, func_eval=func_eval,
 
     def predict(self, X, selected_features, ensemble):
         predictions = np.array([member_clf.predict(X[:, sf]) for member_clf, sf in zip(ensemble, selected_features)])

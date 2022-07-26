@@ -41,9 +41,22 @@ def parse_keel_dat(dat_file):
 
 
 def prepare_X_y(data, target):
+    # Encode target labels with value between 0 and n_classes-1
     class_encoder = LabelEncoder()
     target = class_encoder.fit_transform(target.values.ravel())
-    return data.values, target
+
+    # Encode X data
+    encoded = []
+    X = data.values
+    for i in range(X.shape[1]):
+        try:
+            float(X[0, i])
+            encoded.append(X[:, i])
+        except ValueError:
+            encoded.append(LabelEncoder().fit_transform(X[:, i]))
+    X = np.transpose(encoded)
+
+    return X.astype(np.float32), target
 
 
 def load_dataset(dataset_path, return_X_y=True):

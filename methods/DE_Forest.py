@@ -44,7 +44,7 @@ class DifferentialEvolutionForest(BaseEstimator):
 
         cross_validation = RepeatedStratifiedKFold(n_splits=2, n_repeats=5, random_state=self.random_state_cv)
         # the number of processes to be used
-        pool = multiprocessing.Pool(self.n_proccess)
+        # pool = multiprocessing.Pool(self.n_proccess)
         # Bootstrap
         X_b = []
         y_b = []
@@ -55,7 +55,8 @@ class DifferentialEvolutionForest(BaseEstimator):
                 X_b.append(Xy_bootstrap[0])
                 y_b.append(Xy_bootstrap[1])
             # Create optimization problem
-            problem = BootstrapOptimization(X, y, X_b, y_b, test_size=self.test_size, estimator=self.base_classifier, n_features=n_features, n_classifiers=self.n_classifiers, metric_name=self.metric_name, alpha=self.alpha, runner=pool.starmap, func_eval=starmap_parallelized_eval)
+            # problem = BootstrapOptimization(X, y, X_b, y_b, test_size=self.test_size, estimator=self.base_classifier, n_features=n_features, n_classifiers=self.n_classifiers, metric_name=self.metric_name, alpha=self.alpha, runner=pool.starmap, func_eval=starmap_parallelized_eval)
+            problem = BootstrapOptimization(X, y, X_b, y_b, test_size=self.test_size, estimator=self.base_classifier, n_features=n_features, n_classifiers=self.n_classifiers, metric_name=self.metric_name, alpha=self.alpha)
             algorithm = DE(
                 pop_size=self.p_size,
                 sampling=LHS(),
@@ -66,7 +67,8 @@ class DifferentialEvolutionForest(BaseEstimator):
                 )
         else:
             # Create optimization problem
-            problem = Optimization(X, y, test_size=self.test_size, estimator=self.base_classifier, n_features=n_features, n_classifiers=self.n_classifiers, metric_name=self.metric_name, alpha=self.alpha, cross_validation=cross_validation, runner=pool.starmap, func_eval=starmap_parallelized_eval)
+            # problem = Optimization(X, y, test_size=self.test_size, estimator=self.base_classifier, n_features=n_features, n_classifiers=self.n_classifiers, metric_name=self.metric_name, alpha=self.alpha, cross_validation=cross_validation, runner=pool.starmap, func_eval=starmap_parallelized_eval)
+            problem = Optimization(X, y, test_size=self.test_size, estimator=self.base_classifier, n_features=n_features, n_classifiers=self.n_classifiers, metric_name=self.metric_name, alpha=self.alpha, cross_validation=cross_validation)
             algorithm = DE(
                 pop_size=self.p_size,
                 sampling=LHS(),

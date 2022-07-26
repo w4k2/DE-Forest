@@ -27,6 +27,7 @@ Datasets are from KEEL repository.
 
 
 base_estimator = DecisionTreeClassifier(random_state=1234)
+# multiprocessing inside optimization not work properly and cause Memory error
 n_proccess = 16
 # safe for my computer
 # n_proccess = 5
@@ -174,7 +175,7 @@ def compute(dataset_id, dataset_path):
 
 
 # Multithread; n_jobs - number of threads, where -1 all threads, safe for my computer 2
-Parallel(n_jobs=1)(
+Parallel(n_jobs=-1)(
                 delayed(compute)
                 (dataset_id, dataset_path)
                 for dataset_id, dataset_path in enumerate(dataset_paths)
