@@ -50,7 +50,6 @@ methods = {
 }
 
 method_names = methods.keys()
-print(method_names)
 
 metrics_alias = [
     # "ACC",
@@ -63,7 +62,8 @@ metrics_alias = [
 
 # DATASETS_DIR = "dtest/"
 # DATASETS_DIR = "datasets/"
-DATASETS_DIR = "ds10/"
+DATASETS_DIR = "datasets_all/"
+DATASETS_DIR = "ds56/"
 dataset_paths = []
 for root, _, files in os.walk(DATASETS_DIR):
     print(root, files)
@@ -130,10 +130,10 @@ diversity_mean = np.mean(diversity_m, axis=0)
 
 experiment_name = "experiment1"
 # Results in form of one .tex table of each metric
-result_tables(dataset_paths, metrics_alias, mean_scores, methods, stds, experiment_name)
+# result_tables(dataset_paths, metrics_alias, mean_scores, methods, stds, experiment_name)
 
 # Wilcoxon ranking grid - statistic test for all methods
-# pairs_metrics_multi_grid_all(method_names=method_names, data_np=data_np, experiment_name=experiment_name, dataset_paths=dataset_paths, metrics=metrics_alias, filename="ex1_wilcoxon_all", ref_methods=list(method_names)[0:6], offset=-10)
+pairs_metrics_multi_grid_all(method_names=method_names, data_np=data_np, experiment_name=experiment_name, dataset_paths=dataset_paths, metrics=metrics_alias, filename="ex1_wilcoxon_all", ref_methods=list(method_names)[0:6], offset=-10)
 
 # Diversity bar Plotting
 # diversity_bar_plot(diversity_mean, diversity_measures, method_names, experiment_name=experiment_name)

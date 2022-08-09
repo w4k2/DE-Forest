@@ -12,7 +12,7 @@ from .optimization import Optimization
 from .bootstrap_optimization import BootstrapOptimization
 from utils.utils_diversity import calc_diversity_measures
 
-from pymoo.core.problem import starmap_parallelized_eval
+# from pymoo.core.problem import starmap_parallelized_eval
 from multiprocessing.pool import ThreadPool
 import multiprocessing
 
