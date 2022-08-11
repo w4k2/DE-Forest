@@ -10,6 +10,7 @@ from methods.Random_FS import RandomFS
 # from utils.datasets_table_description import make_description_table
 from utils.wilcoxon_ranking import pairs_metrics_multi_grid_all, pairs_metrics_multi_grid
 from utils.plots import process_plot, diversity_bar_plot, result_tables
+from utils.datasets_table_description import make_description_table
 
 
 base_estimator = DecisionTreeClassifier(random_state=1234)
@@ -62,8 +63,10 @@ metrics_alias = [
 
 # DATASETS_DIR = "dtest/"
 # DATASETS_DIR = "datasets/"
-DATASETS_DIR = "datasets_all/"
-DATASETS_DIR = "ds56/"
+# DATASETS_DIR = "datasets_all/"
+# DATASETS_DIR = "ds56/"
+DATASETS_DIR = "datasets_pre_experiment/"
+
 dataset_paths = []
 for root, _, files in os.walk(DATASETS_DIR):
     print(root, files)
@@ -126,14 +129,14 @@ diversity_mean = np.mean(diversity_m, axis=0)
 # print(mean_scores)
 
 # All datasets with description in the table
-# make_description_table()
+make_description_table(DATASETS_DIR)
 
 experiment_name = "experiment1"
 # Results in form of one .tex table of each metric
 # result_tables(dataset_paths, metrics_alias, mean_scores, methods, stds, experiment_name)
 
 # Wilcoxon ranking grid - statistic test for all methods
-pairs_metrics_multi_grid_all(method_names=method_names, data_np=data_np, experiment_name=experiment_name, dataset_paths=dataset_paths, metrics=metrics_alias, filename="ex1_wilcoxon_all", ref_methods=list(method_names)[0:6], offset=-10)
+# pairs_metrics_multi_grid_all(method_names=method_names, data_np=data_np, experiment_name=experiment_name, dataset_paths=dataset_paths, metrics=metrics_alias, filename="ex1_wilcoxon_all", ref_methods=list(method_names)[0:6], offset=-10)
 
 # Diversity bar Plotting
 # diversity_bar_plot(diversity_mean, diversity_measures, method_names, experiment_name=experiment_name)

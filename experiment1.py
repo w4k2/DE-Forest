@@ -31,6 +31,7 @@ base_estimator = DecisionTreeClassifier(random_state=1234)
 n_proccess = 16
 # safe for my computer
 # n_proccess = 5
+# zmierzyć czasy dla wszystkich metod!!
 methods = {
     "DE_Forest_gm":
         DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="gm", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222),

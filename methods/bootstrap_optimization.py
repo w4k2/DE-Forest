@@ -66,11 +66,9 @@ class BootstrapOptimization(ElementwiseProblem):
                 return self.metric
 
         y_pred = self.predict(self.X, selected_features, ensemble)
-        if self.metric_name == "Accuracy":
-            self.metric = accuracy_score(self.y, y_pred)
-        elif self.metric_name == "BAC":
+        if self.metric_name == "BAC":
             self.metric = balanced_accuracy_score(self.y, y_pred)
-        elif self.metric_name == "gm":
+        elif self.metric_name == "GM":
             self.metric = geometric_mean_score(self.y, y_pred)
         elif self.metric_name == "AUC":
             self.metric = roc_auc_score(self.y, y_pred)

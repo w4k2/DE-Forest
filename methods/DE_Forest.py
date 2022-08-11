@@ -18,7 +18,7 @@ import multiprocessing
 
 
 class DifferentialEvolutionForest(BaseEstimator):
-    def __init__(self, base_classifier, metric_name, alpha=0.5, n_classifiers=10, test_size=0.5, objectives=1, p_size=100, predict_decision="MV", bootstrap=False, n_proccess=8, random_state_cv=222, pruning=False):
+    def __init__(self, base_classifier, metric_name="GM", alpha=0.5, n_classifiers=10, test_size=0.5, objectives=1, p_size=100, predict_decision="MV", bootstrap=False, n_proccess=8, random_state_cv=222, pruning=False):
         self.base_classifier = base_classifier
         self.n_classifiers = n_classifiers
         self.classes = None

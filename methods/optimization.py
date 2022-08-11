@@ -68,11 +68,9 @@ class Optimization(ElementwiseProblem):
                     scores = [0, 0]
                     return np.mean(scores, axis=0)
             y_pred = self.predict(X_test, selected_features, ensemble)
-            if self.metric_name == "Accuracy":
-                scores[fold_id] = accuracy_score(y_test, y_pred)
-            elif self.metric_name == "BAC":
+            if self.metric_name == "BAC":
                 scores[fold_id] = balanced_accuracy_score(y_test, y_pred)
-            elif self.metric_name == "gm":
+            elif self.metric_name == "GM":
                 scores[fold_id] = geometric_mean_score(y_test, y_pred)
             elif self.metric_name == "AUC":
                 scores[fold_id] = roc_auc_score(y_test, y_pred, multi_class='ovo')
