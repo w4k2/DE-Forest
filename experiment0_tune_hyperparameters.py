@@ -10,6 +10,8 @@ from sklearn.tree import DecisionTreeClassifier
 import matplotlib.pyplot as plt
 import os
 import warnings
+from pathlib import Path
+from joblib import Parallel, delayed
 
 from methods.DE_Forest import DifferentialEvolutionForest
 from utils.load_datasets import load_dataset
@@ -25,41 +27,53 @@ for root, _, files in os.walk(DATASETS_DIR):
         dataset_paths.append(os.path.join(root, filename))
 
 def compute(dataset_id, dataset_path):
-X, y = load_dataset(dataset_paths[0])
-# Normalization - transform data to [0, 1]
-X = MinMaxScaler().fit_transform(X, y)
-X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.75, test_size=.25, random_state=0)
+    X, y = load_dataset(dataset_paths[0])
+    # Normalization - transform data to [0, 1]
+    X = MinMaxScaler().fit_transform(X, y)
+    X_train, X_test, y_train, y_test = train_test_split(X, y, train_size=0.75, test_size=.25, random_state=0)
 
-base_estimator = DecisionTreeClassifier(random_state=1234)
-opt = BayesSearchCV(
-    DifferentialEvolutionForest(base_estimator),
-    {
-        # 'n_classifiers': [5],
-        # 'p_size': [100],
-        # 'metric_name': ['BAC'],
-        # 'bootstrap': ['False'],
-        'n_classifiers': [5, 10, 25],
-        'p_size': [100, 200, 500],
-        # 'n_classifiers': (5, 25),
-        # 'p_size': (100, 500),
-        'metric_name': ['BAC', 'AUC', 'GM'],
-        'bootstrap': ['True', 'False'],  # categorical parameter
-    },
-    n_iter=32,
-    scoring="balanced_accuracy",
-    cv=3
-)
+    base_estimator = DecisionTreeClassifier(random_state=1234)
+    opt = BayesSearchCV(
+        DifferentialEvolutionForest(base_estimator),
+        {
+            # 'n_classifiers': [5],
+            # 'p_size': [100],
+            # 'metric_name': ['BAC'],
+            # 'bootstrap': ['False'],
+            'n_classifiers': [5, 10, 25],
+            'p_size': [100, 200, 500],
+            # 'n_classifiers': (5, 25),
+            # 'p_size': (100, 500),
+            'metric_name': ['BAC', 'AUC', 'GM'],
+            'bootstrap': ['True', 'False'],  # categorical parameter
+        },
+        n_iter=32,
+        scoring="balanced_accuracy",
+        cv=3
+    )
 
-opt.fit(X_train, y_train)
+    opt.fit(X_train, y_train)
 
-print("val. score: %s" % opt.best_score_)
-print("test score: %s" % opt.score(X_test, y_test))
+    print("val. score: %s" % opt.best_score_)
+    print("test score: %s" % opt.score(X_test, y_test))
 
-_ = plot_objective(opt.optimizer_results_[0],
-                   dimensions=["n_classifiers", "p_size", "metric_name", "bootstrap"],
-                   n_minimum_search=int(1e8)
-                   )
-plt.savefig("plot_ex0.png", bbox_inches='tight')
+    _ = plot_objective(opt.optimizer_results_[0],
+                    dimensions=["n_classifiers", "p_size", "metric_name", "bootstrap"],
+                    n_minimum_search=int(1e8)
+                    )
+    
+    dataset_name = Path(dataset_path).stem
+    if not os.path.exists("results/experiment0/tune_plots/"):
+                os.makedirs("results/experiment0/tune_plots/")
+    plt.savefig("experiment0/tune_plots/tune_%s.png" % dataset_name, bbox_inches='tight')
+
+
+# Multithread; n_jobs - number of threads, where -1 all threads, safe for my computer 2
+Parallel(n_jobs=-1)(
+                delayed(compute)
+                (dataset_id, dataset_path)
+                for dataset_id, dataset_path in enumerate(dataset_paths)
+                )
 
 
 # from skopt import BayesSearchCV
