@@ -20,7 +20,7 @@ from utils.load_datasets import load_dataset
 
 warnings.filterwarnings("ignore")
 # DATASETS_DIR = "datasets/"
-DATASETS_DIR = "dtest/"
+DATASETS_DIR = "datasets_pre_experiment/"
 dataset_paths = []
 for root, _, files in os.walk(DATASETS_DIR):
     for filename in filter(lambda _: _.endswith('.dat'), files):
