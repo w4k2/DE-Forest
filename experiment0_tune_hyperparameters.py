@@ -65,7 +65,7 @@ def compute(dataset_id, dataset_path):
     dataset_name = Path(dataset_path).stem
     if not os.path.exists("results/experiment0/tune_plots/"):
                 os.makedirs("results/experiment0/tune_plots/")
-    plt.savefig("experiment0/tune_plots/tune_%s.png" % dataset_name, bbox_inches='tight')
+    plt.savefig("results/experiment0/tune_plots/tune_%s.png" % dataset_name, bbox_inches='tight')
 
 
 # Multithread; n_jobs - number of threads, where -1 all threads, safe for my computer 2
