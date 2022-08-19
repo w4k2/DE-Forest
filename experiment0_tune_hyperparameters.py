@@ -17,7 +17,6 @@ from methods.DE_Forest import DifferentialEvolutionForest
 from utils.load_datasets import load_dataset
 
 
-
 warnings.filterwarnings("ignore")
 # DATASETS_DIR = "datasets/"
 DATASETS_DIR = "datasets_pre_experiment/"
@@ -36,16 +35,10 @@ def compute(dataset_id, dataset_path):
     opt = BayesSearchCV(
         DifferentialEvolutionForest(base_estimator),
         {
-            # 'n_classifiers': [5],
-            # 'p_size': [100],
-            # 'metric_name': ['BAC'],
-            # 'bootstrap': ['False'],
+            'bootstrap': ['True', 'False'],  # categorical parameter
+            'metric_name': ['BAC', 'AUC', 'GM'],
             'n_classifiers': [5, 10, 25],
             'p_size': [100, 200, 500],
-            # 'n_classifiers': (5, 25),
-            # 'p_size': (100, 500),
-            'metric_name': ['BAC', 'AUC', 'GM'],
-            'bootstrap': ['True', 'False'],  # categorical parameter
         },
         n_iter=32,
         scoring="balanced_accuracy",
@@ -58,7 +51,7 @@ def compute(dataset_id, dataset_path):
     print("test score: %s" % opt.score(X_test, y_test))
 
     _ = plot_objective(opt.optimizer_results_[0],
-                    dimensions=["n_classifiers", "p_size", "metric_name", "bootstrap"],
+                    dimensions=["bootstrap", "metric_name", "n_classifiers", "p_size"],
                     n_minimum_search=int(1e8)
                     )
     
