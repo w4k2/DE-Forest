@@ -2,7 +2,7 @@ import os
 import numpy as np
 import warnings
 from pathlib import Path
-from .load_datasets import load_dataset
+from load_datasets import load_dataset
 
 
 warnings.filterwarnings("ignore")
@@ -58,3 +58,5 @@ def make_description_table(DATASETS_DIR="../datasets"):
             number_of_objects = len(y_all[arg])
             ds_name = dataset_names[arg].replace("_", "\\_")
             print("%d & \\emph{%s} & %0.2f & %d & %d \\\\" % (id, ds_name, imbalance_ratios[arg], number_of_objects, number_of_features), file=file)
+
+make_description_table(DATASETS_DIR="../datasets_all")

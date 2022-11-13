@@ -1,0 +1,133 @@
+{
+  "type": "Scheduler",
+  "id": "Scheduler-5a25e035-7b30-4ca5-b3ad-0e160be9d6f4",
+  "address": "tcp://127.0.0.1:46815",
+  "services": {
+    "dashboard": 8787
+  },
+  "started": 1668334398.174012,
+  "workers": {
+    "tcp://127.0.0.1:34089": {
+      "type": "Worker",
+      "id": 0,
+      "host": "127.0.0.1",
+      "resources": {},
+      "local_directory": "/home/joannagrzyb/work/DE-Forest/smac_outputs/2022-11-13_11:13:18/dask-worker-space/worker-8bdi37ew",
+      "name": 0,
+      "nthreads": 1,
+      "memory_limit": 8109903872,
+      "last_seen": 1668334399.2425857,
+      "services": {
+        "dashboard": 43893
+      },
+      "metrics": {
+        "task_counts": {
+          "executing": 0,
+          "long-running": 0,
+          "memory": 0,
+          "ready": 0,
+          "constrained": 0,
+          "waiting": 0,
+          "fetch": 0,
+          "missing": 0,
+          "flight": 0,
+          "other": 0
+        },
+        "bandwidth": {
+          "total": 100000000,
+          "workers": {},
+          "types": {}
+        },
+        "managed_bytes": 0,
+        "spilled_bytes": {
+          "memory": 0,
+          "disk": 0
+        },
+        "transfer": {
+          "incoming_bytes": 0,
+          "incoming_count": 0,
+          "incoming_count_total": 0,
+          "outgoing_bytes": 0,
+          "outgoing_count": 0,
+          "outgoing_count_total": 0
+        },
+        "event_loop_interval": 0.02,
+        "cpu": 0.0,
+        "memory": 158818304,
+        "time": 1668334399.2205703,
+        "host_net_io": {
+          "read_bps": 0.0,
+          "write_bps": 0.0
+        },
+        "host_disk_io": {
+          "read_bps": 0.0,
+          "write_bps": 0.0
+        },
+        "num_fds": 20
+      },
+      "status": "running",
+      "nanny": "tcp://127.0.0.1:45827"
+    },
+    "tcp://127.0.0.1:35381": {
+      "type": "Worker",
+      "id": 1,
+      "host": "127.0.0.1",
+      "resources": {},
+      "local_directory": "/home/joannagrzyb/work/DE-Forest/smac_outputs/2022-11-13_11:13:18/dask-worker-space/worker-tgd18jam",
+      "name": 1,
+      "nthreads": 1,
+      "memory_limit": 8109903872,
+      "last_seen": 1668334399.2576864,
+      "services": {
+        "dashboard": 44409
+      },
+      "metrics": {
+        "task_counts": {
+          "executing": 0,
+          "long-running": 0,
+          "memory": 0,
+          "ready": 0,
+          "constrained": 0,
+          "waiting": 0,
+          "fetch": 0,
+          "missing": 0,
+          "flight": 0,
+          "other": 0
+        },
+        "bandwidth": {
+          "total": 100000000,
+          "workers": {},
+          "types": {}
+        },
+        "managed_bytes": 0,
+        "spilled_bytes": {
+          "memory": 0,
+          "disk": 0
+        },
+        "transfer": {
+          "incoming_bytes": 0,
+          "incoming_count": 0,
+          "incoming_count_total": 0,
+          "outgoing_bytes": 0,
+          "outgoing_count": 0,
+          "outgoing_count_total": 0
+        },
+        "event_loop_interval": 0.02,
+        "cpu": 0.0,
+        "memory": 158851072,
+        "time": 1668334399.2239397,
+        "host_net_io": {
+          "read_bps": 0.0,
+          "write_bps": 0.0
+        },
+        "host_disk_io": {
+          "read_bps": 0.0,
+          "write_bps": 0.0
+        },
+        "num_fds": 20
+      },
+      "status": "running",
+      "nanny": "tcp://127.0.0.1:42977"
+    }
+  }
+}

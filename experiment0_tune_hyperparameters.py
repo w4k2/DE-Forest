@@ -16,6 +16,7 @@ from joblib import Parallel, delayed
 from methods.DE_Forest import DifferentialEvolutionForest
 from utils.load_datasets import load_dataset
 
+# Hyperparameters tuning via BayesSearchCV from skopt. It's ok, but it hasn't good explanation and citation. Partial dependence plots are not clear to read. This way hasn't be chosen.
 
 warnings.filterwarnings("ignore")
 # DATASETS_DIR = "datasets/"
