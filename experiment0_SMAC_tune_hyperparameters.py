@@ -137,3 +137,10 @@ if __name__ == "__main__":
                 os.makedirs("smac_outputs/%s" % (date_time))
     with open("smac_outputs/%s/time.txt" % (date_time), 'w') as f:
         f.write(str(end_time))
+
+# Wynik z optymalizacji jest zapisany w pliku stats.json
+# Wynik z badań na serwerze z 15.11.2022 dla 5 datasetów. to:
+    # "bootstrap": "True",
+    # "metric_name": "BAC",
+    # "n_classifiers": 15,
+    # "p_size": 107

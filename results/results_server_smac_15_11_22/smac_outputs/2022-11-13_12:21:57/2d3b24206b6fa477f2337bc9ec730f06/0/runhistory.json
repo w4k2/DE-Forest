@@ -1,0 +1,272 @@
+{
+  "data": [
+    [
+      1,
+      "datasets_pre_experiment/glass0.dat",
+      209652396,
+      null,
+      0.1989379084967321,
+      39967.85311341286,
+      1,
+      1668338521.5824172,
+      1668378489.4366963,
+      {
+        "score_bac": 0.8010620915032679,
+        "time": 39967.85256481171
+      }
+    ],
+    [
+      2,
+      "datasets_pre_experiment/glass0.dat",
+      209652396,
+      null,
+      0.1456290849673203,
+      32185.235627412796,
+      1,
+      1668338521.593161,
+      1668370706.8306165,
+      {
+        "score_bac": 0.8543709150326797,
+        "time": 32185.234927892685
+      }
+    ],
+    [
+      3,
+      "datasets_pre_experiment/glass0.dat",
+      209652396,
+      null,
+      0.21548202614379086,
+      30012.56650161743,
+      1,
+      1668338521.6045573,
+      1668368534.1731613,
+      {
+        "score_bac": 0.7845179738562091,
+        "time": 30012.56610918045
+      }
+    ],
+    [
+      4,
+      "datasets_pre_experiment/glass0.dat",
+      209652396,
+      null,
+      0.1946486928104575,
+      46391.8816010952,
+      1,
+      1668338521.6252286,
+      1668384913.5099428,
+      {
+        "score_bac": 0.8053513071895425,
+        "time": 46391.88101053238
+      }
+    ],
+    [
+      5,
+      "datasets_pre_experiment/glass0.dat",
+      209652396,
+      null,
+      0.18423202614379086,
+      41481.809787511826,
+      1,
+      1668338521.636047,
+      1668380003.4477093,
+      {
+        "score_bac": 0.8157679738562091,
+        "time": 41481.809094667435
+      }
+    ],
+    [
+      6,
+      "datasets_pre_experiment/glass0.dat",
+      209652396,
+      null,
+      0.22671568627450978,
+      35876.13048863411,
+      1,
+      1668338521.6544807,
+      1668374397.7866507,
+      {
+        "score_bac": 0.7732843137254902,
+        "time": 35876.13022327423
+      }
+    ],
+    [
+      7,
+      "datasets_pre_experiment/glass0.dat",
+      209652396,
+      null,
+      0.14174836601307184,
+      14079.283518314362,
+      1,
+      1668338521.6745546,
+      1668352600.9610565,
+      {
+        "score_bac": 0.8582516339869282,
+        "time": 14079.283258199692
+      }
+    ],
+    [
+      8,
+      "datasets_pre_experiment/glass0.dat",
+      209652396,
+      null,
+      0.22406045751633985,
+      19688.364708423615,
+      1,
+      1668338521.6939108,
+      1668358210.0608978,
+      {
+        "score_bac": 0.7759395424836601,
+        "time": 19688.361876010895
+      }
+    ],
+    [
+      9,
+      "datasets_pre_experiment/glass0.dat",
+      209652396,
+      null,
+      0.18852124183006536,
+      43138.2068836689,
+      1,
+      1668338521.7304037,
+      1668381659.9390032,
+      {
+        "score_bac": 0.8114787581699346,
+        "time": 43138.206594944
+      }
+    ],
+    [
+      10,
+      "datasets_pre_experiment/glass0.dat",
+      209652396,
+      null,
+      0.1811683006535948,
+      41211.98424959183,
+      1,
+      1668338521.759162,
+      1668379733.7510877,
+      {
+        "score_bac": 0.8188316993464052,
+        "time": 41211.983963012695
+      }
+    ],
+    [
+      11,
+      "datasets_pre_experiment/glass0.dat",
+      209652396,
+      null,
+      0.184640522875817,
+      34759.868795871735,
+      1,
+      1668338521.7714455,
+      1668373281.6418977,
+      {
+        "score_bac": 0.815359477124183,
+        "time": 34759.86852121353
+      }
+    ],
+    [
+      12,
+      "datasets_pre_experiment/glass0.dat",
+      209652396,
+      null,
+      0.17728758169934644,
+      31185.776447057724,
+      1,
+      1668338521.798746,
+      1668369707.5777152,
+      {
+        "score_bac": 0.8227124183006536,
+        "time": 31185.77607035637
+      }
+    ]
+  ],
+  "configs": {
+    "1": {
+      "bootstrap": "False",
+      "metric_name": "AUC",
+      "n_classifiers": 11,
+      "p_size": 390
+    },
+    "2": {
+      "bootstrap": "False",
+      "metric_name": "AUC",
+      "n_classifiers": 13,
+      "p_size": 301
+    },
+    "3": {
+      "bootstrap": "False",
+      "metric_name": "GM",
+      "n_classifiers": 6,
+      "p_size": 483
+    },
+    "4": {
+      "bootstrap": "False",
+      "metric_name": "BAC",
+      "n_classifiers": 19,
+      "p_size": 358
+    },
+    "5": {
+      "bootstrap": "True",
+      "metric_name": "GM",
+      "n_classifiers": 16,
+      "p_size": 269
+    },
+    "6": {
+      "bootstrap": "False",
+      "metric_name": "GM",
+      "n_classifiers": 10,
+      "p_size": 343
+    },
+    "7": {
+      "bootstrap": "True",
+      "metric_name": "BAC",
+      "n_classifiers": 15,
+      "p_size": 107
+    },
+    "8": {
+      "bootstrap": "False",
+      "metric_name": "BAC",
+      "n_classifiers": 6,
+      "p_size": 220
+    },
+    "9": {
+      "bootstrap": "False",
+      "metric_name": "BAC",
+      "n_classifiers": 17,
+      "p_size": 364
+    },
+    "10": {
+      "bootstrap": "True",
+      "metric_name": "AUC",
+      "n_classifiers": 24,
+      "p_size": 216
+    },
+    "11": {
+      "bootstrap": "False",
+      "metric_name": "AUC",
+      "n_classifiers": 11,
+      "p_size": 347
+    },
+    "12": {
+      "bootstrap": "False",
+      "metric_name": "AUC",
+      "n_classifiers": 19,
+      "p_size": 271
+    }
+  },
+  "config_origins": {
+    "1": "Random Initial Design",
+    "2": "Random Initial Design",
+    "3": "Random Initial Design",
+    "4": "Random Initial Design",
+    "5": "Random Initial Design",
+    "6": "Random Initial Design",
+    "7": "Random Initial Design",
+    "8": "Random Initial Design",
+    "9": "Random Initial Design",
+    "10": "Random Initial Design",
+    "11": "Random Initial Design",
+    "12": "Random Initial Design"
+  }
+}

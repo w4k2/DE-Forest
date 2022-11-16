@@ -1,0 +1,22 @@
+{
+    "submitted": 12,
+    "finished": 12,
+    "n_configs": 12,
+    "walltime_used": 46392.348863601685,
+    "target_function_walltime_used": 409978.9617226124,
+    "incumbent_changed": 1,
+    "trajectory": [
+        {
+            "incumbent": {
+                "bootstrap": "True",
+                "metric_name": "BAC",
+                "n_classifiers": 15,
+                "p_size": 107
+            },
+            "cost": 0.14174836601307184,
+            "budget": null,
+            "walltime_used": 14079.813984155655,
+            "num_trial": 1
+        }
+    ]
+}

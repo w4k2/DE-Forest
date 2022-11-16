@@ -1,5 +1,5 @@
 {
-    "name": "0737ccf8251e1b5e84d227b5a8d0292a",
+    "name": "2d3b24206b6fa477f2337bc9ec730f06",
     "deterministic": false,
     "objectives": "cost",
     "crash_cost": Infinity,
@@ -11,29 +11,29 @@
     "n_trials": 5000,
     "instances": [
         "datasets_pre_experiment/winequality-red-8_vs_6-7.dat",
+        "datasets_pre_experiment/page-blocks-1-3_vs_4.dat",
         "datasets_pre_experiment/kr-vs-k-zero_vs_eight.dat",
         "datasets_pre_experiment/kddcup-rootkit-imap_vs_back.dat",
-        "datasets_pre_experiment/glass0.dat",
-        "datasets_pre_experiment/page-blocks-1-3_vs_4.dat"
+        "datasets_pre_experiment/glass0.dat"
     ],
     "instance_features": {
         "datasets_pre_experiment/winequality-red-8_vs_6-7.dat": [
             0,
             1
         ],
-        "datasets_pre_experiment/kr-vs-k-zero_vs_eight.dat": [
+        "datasets_pre_experiment/page-blocks-1-3_vs_4.dat": [
             1,
             2
         ],
-        "datasets_pre_experiment/kddcup-rootkit-imap_vs_back.dat": [
+        "datasets_pre_experiment/kr-vs-k-zero_vs_eight.dat": [
             2,
             3
         ],
-        "datasets_pre_experiment/glass0.dat": [
+        "datasets_pre_experiment/kddcup-rootkit-imap_vs_back.dat": [
             3,
             4
         ],
-        "datasets_pre_experiment/page-blocks-1-3_vs_4.dat": [
+        "datasets_pre_experiment/glass0.dat": [
             4,
             5
         ]
@@ -41,7 +41,7 @@
     "min_budget": 1,
     "max_budget": 5,
     "seed": 0,
-    "n_workers": 2,
+    "n_workers": 16,
     "_meta": {
         "facade": {
             "name": "MultiFidelityFacade"
@@ -131,11 +131,7 @@
             "name": "Hyperband",
             "instance_seed_pairs": [
                 [
-                    "datasets_pre_experiment/page-blocks-1-3_vs_4.dat",
-                    209652396
-                ],
-                [
-                    "datasets_pre_experiment/kddcup-rootkit-imap_vs_back.dat",
+                    "datasets_pre_experiment/glass0.dat",
                     209652396
                 ],
                 [
@@ -143,7 +139,11 @@
                     209652396
                 ],
                 [
-                    "datasets_pre_experiment/glass0.dat",
+                    "datasets_pre_experiment/page-blocks-1-3_vs_4.dat",
+                    209652396
+                ],
+                [
+                    "datasets_pre_experiment/kddcup-rootkit-imap_vs_back.dat",
                     209652396
                 ],
                 [
@@ -186,5 +186,5 @@
         "multi_objective_algorithm": null,
         "version": "2.0.0a1"
     },
-    "output_directory": "smac_outputs/2022-11-13_11:13:18/0737ccf8251e1b5e84d227b5a8d0292a/0"
+    "output_directory": "smac_outputs/2022-11-13_12:21:57/2d3b24206b6fa477f2337bc9ec730f06/0"
 }
