@@ -7,10 +7,9 @@ from sklearn.tree import DecisionTreeClassifier
 
 from methods.DE_Forest import DifferentialEvolutionForest
 from methods.Random_FS import RandomFS
-# from utils.datasets_table_description import make_description_table
 from utils.wilcoxon_ranking import pairs_metrics_multi_grid_all, pairs_metrics_multi_grid
-from utils.plots import process_plot, diversity_bar_plot, result_tables
-from utils.datasets_table_description import make_description_table
+from utils.plots import process_plot, diversity_bar_plot, result_tables, result_tables_for_time
+# from utils.datasets_table_description import make_description_table
 
 
 base_estimator = DecisionTreeClassifier(random_state=1234)
@@ -18,36 +17,49 @@ base_estimator = DecisionTreeClassifier(random_state=1234)
 # Parallelization
 n_proccess = 16
 methods = {
-    "DE_Forest_gm":
-        DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="gm", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222),
-    "DE_Forest_AUC":
-        DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="AUC", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222),
-    "DE_Forest_bac":
-        DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="BAC", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222),
-    "DE_Forest_gm_b":
-        DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="gm", alpha=1, bootstrap=True, n_proccess=n_proccess, random_state_cv=222),
-    "DE_Forest_AUC_b":
-        DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="AUC", alpha=1, bootstrap=True, n_proccess=n_proccess, random_state_cv=222),
-    "DE_Forest_bac_b":
-        DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="Accuracy", alpha=1, bootstrap=True, n_proccess=n_proccess),
-    # "DE_Forest_a1_bac_p":
-    #     DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="BAC", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222, pruning=True),
-    # "DE_Forest_a1_bac_bp":
-    #     DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="BAC", alpha=1, bootstrap=True, n_proccess=n_proccess, random_state_cv=222, pruning=True),
+    "DE_Forest":
+        DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=15, metric_name="BAC", bootstrap=True, random_state_cv=222, p_size=107),
     "RandomFS":
-        RandomFS(base_classifier=base_estimator, n_classifiers=10, bootstrap=False, max_features_selected=True),
-    # "RandomFS_all_feat":
-    #     RandomFS(base_classifier=base_estimator, n_classifiers=10, bootstrap=False, max_features_selected=False),
+        RandomFS(base_classifier=base_estimator, n_classifiers=15, bootstrap=False, max_features_selected=True),
     "RandomFS_b":
-        RandomFS(base_classifier=base_estimator, n_classifiers=10, bootstrap=True, max_features_selected=True),
-    # "RandomFS_b_all_feat":
-        # RandomFS(base_classifier=base_estimator, n_classifiers=10, bootstrap=True, max_features_selected=False),
+        RandomFS(base_classifier=base_estimator, n_classifiers=15, bootstrap=True, max_features_selected=True),
     "DT":
         DecisionTreeClassifier(random_state=1234),
     "RF":
-        RandomForestClassifier(random_state=0, n_estimators=10, bootstrap=False),
+        RandomForestClassifier(random_state=0, n_estimators=15, bootstrap=False),
     "RF_b":
-        RandomForestClassifier(random_state=0, n_estimators=10, bootstrap=True),
+        RandomForestClassifier(random_state=0, n_estimators=15, bootstrap=True),
+
+    # "DE_Forest_gm":
+    #     DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="gm", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222),
+    # "DE_Forest_AUC":
+    #     DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="AUC", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222),
+    # "DE_Forest_bac":
+    #     DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="BAC", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222),
+    # "DE_Forest_gm_b":
+    #     DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="gm", alpha=1, bootstrap=True, n_proccess=n_proccess, random_state_cv=222),
+    # "DE_Forest_AUC_b":
+    #     DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="AUC", alpha=1, bootstrap=True, n_proccess=n_proccess, random_state_cv=222),
+    # "DE_Forest_bac_b":
+    #     DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="Accuracy", alpha=1, bootstrap=True, n_proccess=n_proccess),
+    # # "DE_Forest_a1_bac_p":
+    # #     DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="BAC", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222, pruning=True),
+    # # "DE_Forest_a1_bac_bp":
+    # #     DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="BAC", alpha=1, bootstrap=True, n_proccess=n_proccess, random_state_cv=222, pruning=True),
+    # "RandomFS":
+    #     RandomFS(base_classifier=base_estimator, n_classifiers=10, bootstrap=False, max_features_selected=True),
+    # # "RandomFS_all_feat":
+    # #     RandomFS(base_classifier=base_estimator, n_classifiers=10, bootstrap=False, max_features_selected=False),
+    # "RandomFS_b":
+    #     RandomFS(base_classifier=base_estimator, n_classifiers=10, bootstrap=True, max_features_selected=True),
+    # # "RandomFS_b_all_feat":
+    #     # RandomFS(base_classifier=base_estimator, n_classifiers=10, bootstrap=True, max_features_selected=False),
+    # "DT":
+    #     DecisionTreeClassifier(random_state=1234),
+    # "RF":
+    #     RandomForestClassifier(random_state=0, n_estimators=10, bootstrap=False),
+    # "RF_b":
+    #     RandomForestClassifier(random_state=0, n_estimators=10, bootstrap=True),
 }
 
 method_names = methods.keys()
@@ -62,10 +74,10 @@ metrics_alias = [
     "Precision"]
 
 # DATASETS_DIR = "dtest/"
-# DATASETS_DIR = "datasets/"
+DATASETS_DIR = "datasets/"
 # DATASETS_DIR = "datasets_all/"
 # DATASETS_DIR = "ds56/"
-DATASETS_DIR = "datasets_pre_experiment/"
+# DATASETS_DIR = "datasets_pre_experiment/"
 
 dataset_paths = []
 for root, _, files in os.walk(DATASETS_DIR):
@@ -87,6 +99,9 @@ methods_names = list(methods.keys())
 
 diversity_measures = ["Entropy", "KW", "Disagreement", "Q statistic"]
 diversity = np.zeros((n_datasets, len(method_names), n_folds, len(diversity_measures)))
+
+time_for_all = np.zeros((n_datasets, len(methods), n_folds))
+mean_times_folds = np.zeros((n_datasets, len(methods)))
 
 for dataset_id, dataset_path in enumerate(dataset_paths):
     dataset_name = Path(dataset_path).stem
@@ -124,19 +139,33 @@ for dataset_id, dataset_path in enumerate(dataset_paths):
                 except:
                     print("Error loading diversity data!", dataset_name, clf_name, div_measure)
 
+        try:
+            filename = "results/experiment1/time_results/%s/%s_time.csv" % (dataset_name, clf_name)
+            if not os.path.isfile(filename):
+                # print("File not exist - %s" % filename)
+                continue
+            times = np.genfromtxt(filename, delimiter=',', dtype=np.float32)
+            mean_time_score = np.mean(times)
+            mean_times_folds[dataset_id, clf_id] = mean_time_score
+        except:
+            print("Error loading time data!", dataset_name, clf_name)
+
 diversity_m = np.mean(diversity, axis=2)
 diversity_mean = np.mean(diversity_m, axis=0)
 # print(mean_scores)
 
 # All datasets with description in the table
-make_description_table(DATASETS_DIR)
+# make_description_table(DATASETS_DIR)
 
 experiment_name = "experiment1"
 # Results in form of one .tex table of each metric
 # result_tables(dataset_paths, metrics_alias, mean_scores, methods, stds, experiment_name)
 
 # Wilcoxon ranking grid - statistic test for all methods
-# pairs_metrics_multi_grid_all(method_names=method_names, data_np=data_np, experiment_name=experiment_name, dataset_paths=dataset_paths, metrics=metrics_alias, filename="ex1_wilcoxon_all", ref_methods=list(method_names)[0:6], offset=-10)
+# pairs_metrics_multi_grid_all(method_names=method_names, data_np=data_np, experiment_name=experiment_name, dataset_paths=dataset_paths, metrics=metrics_alias, filename="ex1_wilcoxon_all", ref_methods=list(method_names)[0:2], offset=-10)
 
 # Diversity bar Plotting
 # diversity_bar_plot(diversity_mean, diversity_measures, method_names, experiment_name=experiment_name)
+
+# Time results in form of .tex table
+result_tables_for_time(dataset_paths, mean_times_folds, methods, experiment_name)

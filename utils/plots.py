@@ -138,3 +138,41 @@ def result_tables(dataset_paths, metrics_alias, mean_scores, methods, stds, expe
                 print(line, file=file)
             print("\\end{tabular}}", file=file)
             print("\\end{table}", file=file)
+
+
+def result_tables_for_time(dataset_paths, mean_times_folds, methods, experiment_name):
+    if not os.path.exists("results/%s/tables/" % experiment_name):
+        os.makedirs("results/%s/tables/" % experiment_name)
+    with open("results/%s/tables/time_%s.tex" % (experiment_name, experiment_name), "w+") as file:
+        print("\\begin{table}[!ht]", file=file)
+        print("\\centering", file=file)
+        print("\\caption{Time [s]}", file=file)
+        columns = "r"
+        for i in methods:
+            columns += " c"
+
+        print("\\scalebox{0.4}{", file=file)
+        print("\\begin{tabular}{%s}" % columns, file=file)
+        print("\\hline", file=file)
+        columns_names = "\\textbf{Dataset name} &"
+        for name in methods:
+            name = name.replace("_", "-")
+            columns_names += f'\\textbf{{{name}}} & '
+        columns_names = columns_names[:-3]
+        columns_names += "\\\\"
+        print(columns_names, file=file)
+        print("\\hline", file=file)
+        for dataset_id, dataset_path in enumerate(dataset_paths):
+            line = "$%s$" % (dataset_path)
+            line_values = []
+            line_values = mean_times_folds[dataset_id, :]
+            max_value = np.amax(line_values)
+            for clf_id, clf_name in enumerate(methods):
+                if mean_times_folds[dataset_id, clf_id] == max_value:
+                    line += " & \\textbf{%0.3f}" % (mean_times_folds[dataset_id, clf_id])
+                else:
+                    line += " & %0.3f" % (mean_times_folds[dataset_id, clf_id])
+            line += " \\\\"
+            print(line, file=file)
+        print("\\end{tabular}}", file=file)
+        print("\\end{table}", file=file)

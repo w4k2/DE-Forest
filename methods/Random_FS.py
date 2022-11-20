@@ -41,6 +41,7 @@ class RandomFS(BaseEstimator):
         if self.max_features_selected:
             for clf in range(self.n_classifiers):
                 max_features = int(math.sqrt(n_features))
+                # max_features = 3
                 count_1 = max_features
                 count_0 = n_features - max_features
                 total_count = n_features

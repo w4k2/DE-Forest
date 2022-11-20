@@ -10,6 +10,7 @@ from pymoo.optimize import minimize
 from pymoo.factory import get_termination
 from .optimization import Optimization
 from .bootstrap_optimization import BootstrapOptimization
+from .bootstrap_optimization_with_constraints import BootstrapOptimizationConstr
 from utils.utils_diversity import calc_diversity_measures
 
 # from pymoo.core.problem import starmap_parallelized_eval
@@ -18,7 +19,7 @@ import multiprocessing
 
 
 class DifferentialEvolutionForest(BaseEstimator):
-    def __init__(self, base_classifier, metric_name="GM", alpha=0.5, n_classifiers=10, test_size=0.5, objectives=1, p_size=100, predict_decision="MV", bootstrap=False, n_proccess=8, random_state_cv=222, pruning=False):
+    def __init__(self, base_classifier, metric_name="GM", alpha=0.5, n_classifiers=10, test_size=0.5, objectives=1, p_size=100, predict_decision="MV", bootstrap=False, n_proccess=8, random_state_cv=222, pruning=False, constraints=False):
         self.base_classifier = base_classifier
         self.n_classifiers = n_classifiers
         self.classes = None
@@ -33,6 +34,7 @@ class DifferentialEvolutionForest(BaseEstimator):
         self.n_proccess = n_proccess
         self.random_state_cv = random_state_cv
         self.pruning = pruning
+        self.constraints = constraints
 
     def partial_fit(self, X, y, classes=None):
         self.X, self.y = X, y
@@ -56,7 +58,10 @@ class DifferentialEvolutionForest(BaseEstimator):
                 y_b.append(Xy_bootstrap[1])
             # Create optimization problem
             # problem = BootstrapOptimization(X, y, X_b, y_b, test_size=self.test_size, estimator=self.base_classifier, n_features=n_features, n_classifiers=self.n_classifiers, metric_name=self.metric_name, alpha=self.alpha, runner=pool.starmap, func_eval=starmap_parallelized_eval)
-            problem = BootstrapOptimization(X, y, X_b, y_b, test_size=self.test_size, estimator=self.base_classifier, n_features=n_features, n_classifiers=self.n_classifiers, metric_name=self.metric_name, alpha=self.alpha)
+            if self.constraints is True:
+                problem = BootstrapOptimizationConstr(X, y, X_b, y_b, test_size=self.test_size, estimator=self.base_classifier, n_features=n_features, n_classifiers=self.n_classifiers, metric_name=self.metric_name, alpha=self.alpha)
+            else:
+                problem = BootstrapOptimization(X, y, X_b, y_b, test_size=self.test_size, estimator=self.base_classifier, n_features=n_features, n_classifiers=self.n_classifiers, metric_name=self.metric_name, alpha=self.alpha)
             algorithm = DE(
                 pop_size=self.p_size,
                 sampling=LHS(),

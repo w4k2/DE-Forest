@@ -1,4 +1,5 @@
 import numpy as np
+import math
 from sklearn.base import clone
 from sklearn.metrics import accuracy_score, balanced_accuracy_score, roc_auc_score
 from imblearn.metrics import geometric_mean_score
@@ -86,5 +87,7 @@ class Optimization(ElementwiseProblem):
         # Function constraint to select specific numbers of features:
         # number = int((1 - self.scale_features) * self.n_features)
         # out["G"] = (self.n_features - np.sum(x[2:]) - number) ** 2
+
+        # print(x)
+        # out["G"] = int(math.sqrt(self.n_features)) - np.sum(x[0:self.n_classifiers])
         # print(out["G"])
-        # print((x[2:]))

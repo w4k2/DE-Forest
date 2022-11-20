@@ -1,4 +1,5 @@
 import numpy as np
+import math
 from sklearn.base import clone
 from sklearn.metrics import accuracy_score, balanced_accuracy_score, roc_auc_score
 from imblearn.metrics import geometric_mean_score
@@ -27,8 +28,9 @@ class BootstrapOptimization(ElementwiseProblem):
         xl_binary = [0] * n_variable
         xu_binary = [1] * n_variable
 
-        super().__init__(n_var=n_variable, n_obj=objectives,
-                         n_constr=0, xl=xl_binary, xu=xu_binary, **kwargs)
+        # !!! Set n_ieq_constr=0, if constraint is not used
+
+        super().__init__(n_var=n_variable, n_obj=objectives, n_ieq_constr=0, n_eq_constr=0, xl=xl_binary, xu=xu_binary, **kwargs)
         # runner=runner, func_eval=func_eval,
 
     def predict(self, X, selected_features, ensemble):
@@ -85,3 +87,18 @@ class BootstrapOptimization(ElementwiseProblem):
         # out["G"] = (self.n_features - np.sum(x[2:]) - number) ** 2
         # print(out["G"])
         # print((x[2:]))
+
+        # print(x)
+        # selected_features = []
+        # for result_opt in x:
+        #     if result_opt > 0.5:
+        #         feature = True
+        #         selected_features.append(feature)
+        #     else:
+        #         feature = False
+        #         selected_features.append(feature)
+        # selected_features = np.array_split(selected_features, self.n_classifiers)
+        # print(selected_features, np.sum(selected_features, axis=1), max(np.sum(selected_features, axis=1)), self.n_features, 0.5 * self.n_features)
+        # to co jest po prawej stronie ma być <= 0
+        # out["G"] = max(np.sum(selected_features, axis=1)) - int(0.5 * self.n_features)
+        # print(out["G"])
