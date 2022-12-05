@@ -2,14 +2,14 @@ import os
 import numpy as np
 
 from pathlib import Path
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestClassifier, ExtraTreesClassifier
 from sklearn.tree import DecisionTreeClassifier
 
 from methods.DE_Forest import DifferentialEvolutionForest
 from methods.Random_FS import RandomFS
-from utils.wilcoxon_ranking import pairs_metrics_multi_grid_all, pairs_metrics_multi_grid
-from utils.plots import process_plot, diversity_bar_plot, result_tables, result_tables_for_time
-# from utils.datasets_table_description import make_description_table
+from utils.wilcoxon_ranking import pairs_metrics_multi_grid_all, pairs_metrics_multi_line
+from utils.plots import process_plot, diversity_bar_plot, result_tables, result_tables_for_time, result_tables_IR, result_tables_features
+from utils.datasets_table_description import make_description_table
 
 
 base_estimator = DecisionTreeClassifier(random_state=1234)
@@ -29,6 +29,10 @@ methods = {
         RandomForestClassifier(random_state=0, n_estimators=15, bootstrap=False),
     "RF_b":
         RandomForestClassifier(random_state=0, n_estimators=15, bootstrap=True),
+    "ET":
+        ExtraTreesClassifier(random_state=0, n_estimators=15, bootstrap=False),
+    "ET_b":
+        ExtraTreesClassifier(random_state=0, n_estimators=15, bootstrap=True),
 
     # "DE_Forest_gm":
     #     DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="gm", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222),
@@ -67,7 +71,8 @@ method_names = methods.keys()
 metrics_alias = [
     # "ACC",
     "BAC",
-    "Gmean",
+    # "Gmean",
+    "Gmean_pr",
     "F1score",
     "Recall",
     "Specificity",
@@ -102,6 +107,7 @@ diversity = np.zeros((n_datasets, len(method_names), n_folds, len(diversity_meas
 
 time_for_all = np.zeros((n_datasets, len(methods), n_folds))
 mean_times_folds = np.zeros((n_datasets, len(methods)))
+sum_times = np.zeros((n_datasets, len(methods)))
 
 for dataset_id, dataset_path in enumerate(dataset_paths):
     dataset_name = Path(dataset_path).stem
@@ -145,8 +151,9 @@ for dataset_id, dataset_path in enumerate(dataset_paths):
                 # print("File not exist - %s" % filename)
                 continue
             times = np.genfromtxt(filename, delimiter=',', dtype=np.float32)
-            mean_time_score = np.mean(times)
-            mean_times_folds[dataset_id, clf_id] = mean_time_score
+            # mean_time_score = np.mean(times)
+            # mean_times_folds[dataset_id, clf_id] = mean_time_score
+            sum_times[dataset_id, clf_id] = sum(times)
         except:
             print("Error loading time data!", dataset_name, clf_name)
 
@@ -161,11 +168,22 @@ experiment_name = "experiment1"
 # Results in form of one .tex table of each metric
 # result_tables(dataset_paths, metrics_alias, mean_scores, methods, stds, experiment_name)
 
-# Wilcoxon ranking grid - statistic test for all methods
+# # Results in form of one .tex table of each metric sorted by IR
+# result_tables_IR(dataset_paths, metrics_alias, mean_scores, methods, stds, experiment_name)
+
+# # Results in form of one .tex table of each metric sorted by number of features
+# result_tables_features(dataset_paths, metrics_alias, mean_scores, methods, stds, experiment_name)
+
+# # Wilcoxon ranking grid - statistic test for all methods
 # pairs_metrics_multi_grid_all(method_names=method_names, data_np=data_np, experiment_name=experiment_name, dataset_paths=dataset_paths, metrics=metrics_alias, filename="ex1_wilcoxon_all", ref_methods=list(method_names)[0:2], offset=-10)
+
+
+# Wilcoxon ranking line - statistic test for my method vs the remaining methods
+# pairs_metrics_multi_line(method_names=list(method_names), data_np=data_np, experiment_name=experiment_name, dataset_paths=dataset_paths, metrics=metrics_alias, filename="ex1_wilcoxon", ref_methods=list(method_names))
+
 
 # Diversity bar Plotting
 # diversity_bar_plot(diversity_mean, diversity_measures, method_names, experiment_name=experiment_name)
 
 # Time results in form of .tex table
-result_tables_for_time(dataset_paths, mean_times_folds, methods, experiment_name)
+result_tables_for_time(dataset_paths, sum_times, methods, experiment_name)

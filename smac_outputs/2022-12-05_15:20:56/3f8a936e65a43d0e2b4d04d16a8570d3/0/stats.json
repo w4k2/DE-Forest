@@ -1,0 +1,22 @@
+{
+    "submitted": 1,
+    "finished": 1,
+    "n_configs": 1,
+    "walltime_used": 4398.690558433533,
+    "target_function_walltime_used": 4398.570926189423,
+    "incumbent_changed": 1,
+    "trajectory": [
+        {
+            "incumbent": {
+                "bootstrap": "False",
+                "metric_name": "AUC",
+                "n_classifiers": 11,
+                "p_size": 390
+            },
+            "cost": 0.2824509803921569,
+            "budget": null,
+            "walltime_used": 4398.686515331268,
+            "num_trial": 1
+        }
+    ]
+}

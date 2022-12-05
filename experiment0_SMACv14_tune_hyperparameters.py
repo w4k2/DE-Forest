@@ -28,6 +28,7 @@ logging.basicConfig(level=logging.INFO)
 warnings.filterwarnings("ignore")
 
 # SMAC Version: V1.4
+# Old version of SMAC, NOT USE IT
 
 
 DATASETS_DIR = "dtest/"

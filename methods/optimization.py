@@ -1,8 +1,8 @@
 import numpy as np
 import math
 from sklearn.base import clone
-from sklearn.metrics import accuracy_score, balanced_accuracy_score, roc_auc_score
-from imblearn.metrics import geometric_mean_score
+from sklearn.metrics import accuracy_score, balanced_accuracy_score, roc_auc_score, precision_score, recall_score
+# from imblearn.metrics import geometric_mean_score
 from scipy.stats import mode
 from pymoo.core.problem import ElementwiseProblem
 
@@ -71,8 +71,14 @@ class Optimization(ElementwiseProblem):
             y_pred = self.predict(X_test, selected_features, ensemble)
             if self.metric_name == "BAC":
                 scores[fold_id] = balanced_accuracy_score(y_test, y_pred)
+        # !!! Jeśli będę używać metryki GM, trzeba zmienić sposób liczenia tej metryki
             elif self.metric_name == "GM":
-                scores[fold_id] = geometric_mean_score(y_test, y_pred)
+                # scores[fold_id] = geometric_mean_score(y_test, y_pred)
+
+                precision = precision_score(y_test, y_pred)
+                recall = recall_score(y_test, y_pred)
+                # Convert G-mean metric to sqrt(Recall*Precision)
+                scores[fold_id] = math.sqrt(precision * recall)
             elif self.metric_name == "AUC":
                 scores[fold_id] = roc_auc_score(y_test, y_pred, multi_class='ovo')
         return np.mean(scores, axis=0)

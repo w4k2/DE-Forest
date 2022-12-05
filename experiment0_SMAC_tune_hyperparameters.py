@@ -25,6 +25,7 @@ warnings.filterwarnings("ignore")
 
 
 DATASETS_DIR = "datasets_pre_experiment/"
+# DATASETS_DIR = "dtest/"
 dataset_paths = []
 for root, _, files in os.walk(DATASETS_DIR):
     for filename in filter(lambda _: _.endswith('.dat'), files):

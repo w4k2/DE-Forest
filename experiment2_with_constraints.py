@@ -12,7 +12,7 @@ from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import RepeatedStratifiedKFold
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.base import clone
-from sklearn.ensemble import RandomForestClassifier
+from sklearn.ensemble import RandomForestClassifier, ExtraTreesClassifier
 
 from methods.DE_Forest import DifferentialEvolutionForest
 from methods.Random_FS import RandomFS
@@ -25,7 +25,7 @@ from utils.load_datasets import load_dataset
 Datasets are from KEEL repository.
 """
 
-
+# !!! Jeśli będę używać metryki GM wewnątrz optymalizacji, to trzeba zmienić sposób liczenia tej metryki
 base_estimator = DecisionTreeClassifier(random_state=1234)
 # multiprocessing inside optimization not work properly and cause Memory error
 n_proccess = 16
@@ -37,18 +37,22 @@ n_proccess = 16
     # "n_classifiers": 15,
     # "p_size": 107
 methods = {
-    "DE_Forest_constr":
-        DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=15, metric_name="BAC", bootstrap=True, random_state_cv=222, p_size=107, constraints=True),
-    "RandomFS":
-        RandomFS(base_classifier=base_estimator, n_classifiers=15, bootstrap=False, max_features_selected=True),
-    "RandomFS_b":
-        RandomFS(base_classifier=base_estimator, n_classifiers=15, bootstrap=True, max_features_selected=True),
-    "DT":
-        DecisionTreeClassifier(random_state=1234),
-    "RF":
-        RandomForestClassifier(random_state=1234, n_estimators=15, bootstrap=False, max_depth=2, max_leaf_nodes=4),
-    "RF_b":
-        RandomForestClassifier(random_state=0, n_estimators=15, bootstrap=True),
+    # "DE_Forest_constr":
+    #     DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=15, metric_name="BAC", bootstrap=True, random_state_cv=222, p_size=107, constraints=True),
+    # "RandomFS":
+    #     RandomFS(base_classifier=base_estimator, n_classifiers=15, bootstrap=False, max_features_selected=True),
+    # "RandomFS_b":
+    #     RandomFS(base_classifier=base_estimator, n_classifiers=15, bootstrap=True, max_features_selected=True),
+    # "DT":
+    #     DecisionTreeClassifier(random_state=1234),
+    # "RF":
+    #     RandomForestClassifier(random_state=1234, n_estimators=15, bootstrap=False, max_depth=2, max_leaf_nodes=4),
+    # "RF_b":
+    #     RandomForestClassifier(random_state=0, n_estimators=15, bootstrap=True),
+    "ET":
+        ExtraTreesClassifier(random_state=0, n_estimators=15, bootstrap=False),
+    "ET_b":
+        ExtraTreesClassifier(random_state=0, n_estimators=15, bootstrap=True),
 
     # "DE_Forest_AUC":
     #     DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="AUC", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222),
@@ -101,6 +105,8 @@ metrics_alias = [
     "Recall",
     "Specificity",
     "Precision"]
+
+experiment_name = "experiment2_constr"
 
 if not os.path.exists("textinfo"):
     os.makedirs("textinfo")
@@ -158,7 +164,7 @@ def compute(dataset_id, dataset_path):
 
                 time_for_all[clf_id, fold_id] = end_method
                 
-        experiment_name = "experiment2_constr"
+        
         # Save results to csv
         for clf_id, clf_name in enumerate(methods):
             # Save metric results
@@ -190,7 +196,7 @@ def compute(dataset_id, dataset_path):
 
 
 # Multithread; n_jobs - number of threads, where -1 all threads, safe for my computer 2
-Parallel(n_jobs=-1)(
+Parallel(n_jobs=2)(
                 delayed(compute)
                 (dataset_id, dataset_path)
                 for dataset_id, dataset_path in enumerate(dataset_paths)

@@ -31,7 +31,8 @@ def calc_imbalance_ratio(X, y):
     return imbalance_ratio
 
 
-def make_description_table(DATASETS_DIR="../datasets"):
+def make_description_table(DATASETS_DIR="./datasets"):
+    print(DATASETS_DIR)
     dataset_names = []
     X_all = []
     y_all = []
@@ -59,4 +60,4 @@ def make_description_table(DATASETS_DIR="../datasets"):
             ds_name = dataset_names[arg].replace("_", "\\_")
             print("%d & \\emph{%s} & %0.2f & %d & %d \\\\" % (id, ds_name, imbalance_ratios[arg], number_of_objects, number_of_features), file=file)
 
-make_description_table(DATASETS_DIR="../datasets_all")
+# make_description_table(DATASETS_DIR="./datasets")

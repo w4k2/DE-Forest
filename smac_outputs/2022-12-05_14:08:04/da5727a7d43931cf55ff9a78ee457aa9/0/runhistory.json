@@ -1,0 +1,160 @@
+{
+  "data": [
+    [
+      1,
+      "dtest/ecoli-0-2-6-7_vs_3-5.dat",
+      209652396,
+      null,
+      2147483647.0,
+      0.0,
+      8,
+      0.0,
+      0.0,
+      {}
+    ],
+    [
+      2,
+      "dtest/ecoli-0-2-6-7_vs_3-5.dat",
+      209652396,
+      null,
+      2147483647.0,
+      0.0,
+      8,
+      0.0,
+      0.0,
+      {}
+    ],
+    [
+      3,
+      "dtest/ecoli-0-2-6-7_vs_3-5.dat",
+      209652396,
+      null,
+      2147483647.0,
+      0.0,
+      8,
+      0.0,
+      0.0,
+      {}
+    ],
+    [
+      4,
+      "dtest/ecoli-0-2-6-7_vs_3-5.dat",
+      209652396,
+      null,
+      2147483647.0,
+      0.0,
+      8,
+      0.0,
+      0.0,
+      {}
+    ],
+    [
+      5,
+      "dtest/ecoli-0-2-6-7_vs_3-5.dat",
+      209652396,
+      null,
+      2147483647.0,
+      0.0,
+      8,
+      0.0,
+      0.0,
+      {}
+    ],
+    [
+      6,
+      "dtest/ecoli-0-2-6-7_vs_3-5.dat",
+      209652396,
+      null,
+      2147483647.0,
+      0.0,
+      8,
+      0.0,
+      0.0,
+      {}
+    ],
+    [
+      7,
+      "dtest/ecoli-0-2-6-7_vs_3-5.dat",
+      209652396,
+      null,
+      2147483647.0,
+      0.0,
+      8,
+      0.0,
+      0.0,
+      {}
+    ],
+    [
+      8,
+      "dtest/ecoli-0-2-6-7_vs_3-5.dat",
+      209652396,
+      null,
+      2147483647.0,
+      0.0,
+      8,
+      0.0,
+      0.0,
+      {}
+    ]
+  ],
+  "configs": {
+    "1": {
+      "bootstrap": "False",
+      "metric_name": "AUC",
+      "n_classifiers": 11,
+      "p_size": 390
+    },
+    "2": {
+      "bootstrap": "False",
+      "metric_name": "AUC",
+      "n_classifiers": 13,
+      "p_size": 301
+    },
+    "3": {
+      "bootstrap": "False",
+      "metric_name": "GM",
+      "n_classifiers": 6,
+      "p_size": 483
+    },
+    "4": {
+      "bootstrap": "False",
+      "metric_name": "BAC",
+      "n_classifiers": 19,
+      "p_size": 358
+    },
+    "5": {
+      "bootstrap": "True",
+      "metric_name": "GM",
+      "n_classifiers": 16,
+      "p_size": 269
+    },
+    "6": {
+      "bootstrap": "False",
+      "metric_name": "GM",
+      "n_classifiers": 10,
+      "p_size": 343
+    },
+    "7": {
+      "bootstrap": "True",
+      "metric_name": "BAC",
+      "n_classifiers": 15,
+      "p_size": 107
+    },
+    "8": {
+      "bootstrap": "False",
+      "metric_name": "BAC",
+      "n_classifiers": 6,
+      "p_size": 220
+    }
+  },
+  "config_origins": {
+    "1": "Random Initial Design",
+    "2": "Random Initial Design",
+    "3": "Random Initial Design",
+    "4": "Random Initial Design",
+    "5": "Random Initial Design",
+    "6": "Random Initial Design",
+    "7": "Random Initial Design",
+    "8": "Random Initial Design"
+  }
+}
