@@ -145,3 +145,9 @@ if __name__ == "__main__":
     # "metric_name": "BAC",
     # "n_classifiers": 15,
     # "p_size": 107
+
+# Wynik z badań na serwerze z 06.12.2022 dla 5 datasetów., (G-mean liczony na precision i recall) to:
+    # "bootstrap": "True",
+    # "metric_name": "BAC",
+    # "n_classifiers": 15,
+    # "p_size": 107

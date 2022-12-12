@@ -1,0 +1,987 @@
+{
+  "type": "Scheduler",
+  "id": "Scheduler-14ee0601-69d8-4e63-bbd1-eed5f83e420d",
+  "address": "tcp://127.0.0.1:37309",
+  "services": {
+    "dashboard": 8787
+  },
+  "started": 1670347957.2774472,
+  "workers": {
+    "tcp://127.0.0.1:34263": {
+      "type": "Worker",
+      "id": 14,
+      "host": "127.0.0.1",
+      "resources": {},
+      "local_directory": "/root/github/DE-Forest/smac_outputs/2022-12-06_18:32:37/dask-worker-space/worker-2o4dg0_q",
+      "name": 14,
+      "nthreads": 1,
+      "memory_limit": 4222727424,
+      "last_seen": 1670347960.867867,
+      "services": {
+        "dashboard": 34583
+      },
+      "metrics": {
+        "task_counts": {
+          "executing": 0,
+          "long-running": 0,
+          "memory": 0,
+          "ready": 0,
+          "constrained": 0,
+          "waiting": 0,
+          "fetch": 0,
+          "missing": 0,
+          "flight": 0,
+          "other": 0
+        },
+        "bandwidth": {
+          "total": 100000000,
+          "workers": {},
+          "types": {}
+        },
+        "managed_bytes": 0,
+        "spilled_bytes": {
+          "memory": 0,
+          "disk": 0
+        },
+        "transfer": {
+          "incoming_bytes": 0,
+          "incoming_count": 0,
+          "incoming_count_total": 0,
+          "outgoing_bytes": 0,
+          "outgoing_count": 0,
+          "outgoing_count_total": 0
+        },
+        "event_loop_interval": 0.02,
+        "cpu": 0.0,
+        "memory": 157212672,
+        "time": 1670347960.8233514,
+        "host_net_io": {
+          "read_bps": 0.0,
+          "write_bps": 0.0
+        },
+        "host_disk_io": {
+          "read_bps": 0.0,
+          "write_bps": 0.0
+        },
+        "num_fds": 20
+      },
+      "status": "running",
+      "nanny": "tcp://127.0.0.1:42851"
+    },
+    "tcp://127.0.0.1:36187": {
+      "type": "Worker",
+      "id": 5,
+      "host": "127.0.0.1",
+      "resources": {},
+      "local_directory": "/root/github/DE-Forest/smac_outputs/2022-12-06_18:32:37/dask-worker-space/worker-i4z8xp27",
+      "name": 5,
+      "nthreads": 1,
+      "memory_limit": 4222727424,
+      "last_seen": 1670347960.9707968,
+      "services": {
+        "dashboard": 36773
+      },
+      "metrics": {
+        "task_counts": {
+          "executing": 0,
+          "long-running": 0,
+          "memory": 0,
+          "ready": 0,
+          "constrained": 0,
+          "waiting": 0,
+          "fetch": 0,
+          "missing": 0,
+          "flight": 0,
+          "other": 0
+        },
+        "bandwidth": {
+          "total": 100000000,
+          "workers": {},
+          "types": {}
+        },
+        "managed_bytes": 0,
+        "spilled_bytes": {
+          "memory": 0,
+          "disk": 0
+        },
+        "transfer": {
+          "incoming_bytes": 0,
+          "incoming_count": 0,
+          "incoming_count_total": 0,
+          "outgoing_bytes": 0,
+          "outgoing_count": 0,
+          "outgoing_count_total": 0
+        },
+        "event_loop_interval": 0.02,
+        "cpu": 0.0,
+        "memory": 156823552,
+        "time": 1670347960.934745,
+        "host_net_io": {
+          "read_bps": 82018.96556749007,
+          "write_bps": 82018.96556749007
+        },
+        "host_disk_io": {
+          "read_bps": 0.0,
+          "write_bps": 0.0
+        },
+        "num_fds": 20
+      },
+      "status": "running",
+      "nanny": "tcp://127.0.0.1:35313"
+    },
+    "tcp://127.0.0.1:37589": {
+      "type": "Worker",
+      "id": 12,
+      "host": "127.0.0.1",
+      "resources": {},
+      "local_directory": "/root/github/DE-Forest/smac_outputs/2022-12-06_18:32:37/dask-worker-space/worker-_pw3vx77",
+      "name": 12,
+      "nthreads": 1,
+      "memory_limit": 4222727424,
+      "last_seen": 1670347961.1031718,
+      "services": {
+        "dashboard": 36789
+      },
+      "metrics": {
+        "task_counts": {
+          "executing": 0,
+          "long-running": 0,
+          "memory": 0,
+          "ready": 0,
+          "constrained": 0,
+          "waiting": 0,
+          "fetch": 0,
+          "missing": 0,
+          "flight": 0,
+          "other": 0
+        },
+        "bandwidth": {
+          "total": 100000000,
+          "workers": {},
+          "types": {}
+        },
+        "managed_bytes": 0,
+        "spilled_bytes": {
+          "memory": 0,
+          "disk": 0
+        },
+        "transfer": {
+          "incoming_bytes": 0,
+          "incoming_count": 0,
+          "incoming_count_total": 0,
+          "outgoing_bytes": 0,
+          "outgoing_count": 0,
+          "outgoing_count_total": 0
+        },
+        "event_loop_interval": 0.02,
+        "cpu": 0.0,
+        "memory": 156766208,
+        "time": 1670347961.082727,
+        "host_net_io": {
+          "read_bps": 0.0,
+          "write_bps": 0.0
+        },
+        "host_disk_io": {
+          "read_bps": 0.0,
+          "write_bps": 0.0
+        },
+        "num_fds": 20
+      },
+      "status": "running",
+      "nanny": "tcp://127.0.0.1:43009"
+    },
+    "tcp://127.0.0.1:37759": {
+      "type": "Worker",
+      "id": 3,
+      "host": "127.0.0.1",
+      "resources": {},
+      "local_directory": "/root/github/DE-Forest/smac_outputs/2022-12-06_18:32:37/dask-worker-space/worker-npis50kc",
+      "name": 3,
+      "nthreads": 1,
+      "memory_limit": 4222727424,
+      "last_seen": 1670347960.9623435,
+      "services": {
+        "dashboard": 42533
+      },
+      "metrics": {
+        "task_counts": {
+          "executing": 0,
+          "long-running": 0,
+          "memory": 0,
+          "ready": 0,
+          "constrained": 0,
+          "waiting": 0,
+          "fetch": 0,
+          "missing": 0,
+          "flight": 0,
+          "other": 0
+        },
+        "bandwidth": {
+          "total": 100000000,
+          "workers": {},
+          "types": {}
+        },
+        "managed_bytes": 0,
+        "spilled_bytes": {
+          "memory": 0,
+          "disk": 0
+        },
+        "transfer": {
+          "incoming_bytes": 0,
+          "incoming_count": 0,
+          "incoming_count_total": 0,
+          "outgoing_bytes": 0,
+          "outgoing_count": 0,
+          "outgoing_count_total": 0
+        },
+        "event_loop_interval": 0.02,
+        "cpu": 0.0,
+        "memory": 156794880,
+        "time": 1670347960.9236996,
+        "host_net_io": {
+          "read_bps": 0.0,
+          "write_bps": 0.0
+        },
+        "host_disk_io": {
+          "read_bps": 0.0,
+          "write_bps": 0.0
+        },
+        "num_fds": 20
+      },
+      "status": "running",
+      "nanny": "tcp://127.0.0.1:45595"
+    },
+    "tcp://127.0.0.1:39153": {
+      "type": "Worker",
+      "id": 11,
+      "host": "127.0.0.1",
+      "resources": {},
+      "local_directory": "/root/github/DE-Forest/smac_outputs/2022-12-06_18:32:37/dask-worker-space/worker-5sjeufuh",
+      "name": 11,
+      "nthreads": 1,
+      "memory_limit": 4222727424,
+      "last_seen": 1670347960.9365792,
+      "services": {
+        "dashboard": 45727
+      },
+      "metrics": {
+        "task_counts": {
+          "executing": 0,
+          "long-running": 0,
+          "memory": 0,
+          "ready": 0,
+          "constrained": 0,
+          "waiting": 0,
+          "fetch": 0,
+          "missing": 0,
+          "flight": 0,
+          "other": 0
+        },
+        "bandwidth": {
+          "total": 100000000,
+          "workers": {},
+          "types": {}
+        },
+        "managed_bytes": 0,
+        "spilled_bytes": {
+          "memory": 0,
+          "disk": 0
+        },
+        "transfer": {
+          "incoming_bytes": 0,
+          "incoming_count": 0,
+          "incoming_count_total": 0,
+          "outgoing_bytes": 0,
+          "outgoing_count": 0,
+          "outgoing_count_total": 0
+        },
+        "event_loop_interval": 0.02,
+        "cpu": 0.0,
+        "memory": 156729344,
+        "time": 1670347960.9064493,
+        "host_net_io": {
+          "read_bps": 0.0,
+          "write_bps": 0.0
+        },
+        "host_disk_io": {
+          "read_bps": 0.0,
+          "write_bps": 0.0
+        },
+        "num_fds": 20
+      },
+      "status": "running",
+      "nanny": "tcp://127.0.0.1:38661"
+    },
+    "tcp://127.0.0.1:39655": {
+      "type": "Worker",
+      "id": 1,
+      "host": "127.0.0.1",
+      "resources": {},
+      "local_directory": "/root/github/DE-Forest/smac_outputs/2022-12-06_18:32:37/dask-worker-space/worker-d4iwwfl7",
+      "name": 1,
+      "nthreads": 1,
+      "memory_limit": 4222727424,
+      "last_seen": 1670347961.173275,
+      "services": {
+        "dashboard": 43621
+      },
+      "metrics": {
+        "task_counts": {
+          "executing": 0,
+          "long-running": 0,
+          "memory": 0,
+          "ready": 0,
+          "constrained": 0,
+          "waiting": 0,
+          "fetch": 0,
+          "missing": 0,
+          "flight": 0,
+          "other": 0
+        },
+        "bandwidth": {
+          "total": 100000000,
+          "workers": {},
+          "types": {}
+        },
+        "managed_bytes": 0,
+        "spilled_bytes": {
+          "memory": 0,
+          "disk": 0
+        },
+        "transfer": {
+          "incoming_bytes": 0,
+          "incoming_count": 0,
+          "incoming_count_total": 0,
+          "outgoing_bytes": 0,
+          "outgoing_count": 0,
+          "outgoing_count_total": 0
+        },
+        "event_loop_interval": 0.02,
+        "cpu": 0.0,
+        "memory": 156782592,
+        "time": 1670347961.1499035,
+        "host_net_io": {
+          "read_bps": 0.0,
+          "write_bps": 0.0
+        },
+        "host_disk_io": {
+          "read_bps": 0.0,
+          "write_bps": 0.0
+        },
+        "num_fds": 20
+      },
+      "status": "running",
+      "nanny": "tcp://127.0.0.1:37201"
+    },
+    "tcp://127.0.0.1:39877": {
+      "type": "Worker",
+      "id": 4,
+      "host": "127.0.0.1",
+      "resources": {},
+      "local_directory": "/root/github/DE-Forest/smac_outputs/2022-12-06_18:32:37/dask-worker-space/worker-od1c7vmp",
+      "name": 4,
+      "nthreads": 1,
+      "memory_limit": 4222727424,
+      "last_seen": 1670347961.0471923,
+      "services": {
+        "dashboard": 39357
+      },
+      "metrics": {
+        "task_counts": {
+          "executing": 0,
+          "long-running": 0,
+          "memory": 0,
+          "ready": 0,
+          "constrained": 0,
+          "waiting": 0,
+          "fetch": 0,
+          "missing": 0,
+          "flight": 0,
+          "other": 0
+        },
+        "bandwidth": {
+          "total": 100000000,
+          "workers": {},
+          "types": {}
+        },
+        "managed_bytes": 0,
+        "spilled_bytes": {
+          "memory": 0,
+          "disk": 0
+        },
+        "transfer": {
+          "incoming_bytes": 0,
+          "incoming_count": 0,
+          "incoming_count_total": 0,
+          "outgoing_bytes": 0,
+          "outgoing_count": 0,
+          "outgoing_count_total": 0
+        },
+        "event_loop_interval": 0.02,
+        "cpu": 0.0,
+        "memory": 157138944,
+        "time": 1670347961.0228624,
+        "host_net_io": {
+          "read_bps": 0.0,
+          "write_bps": 0.0
+        },
+        "host_disk_io": {
+          "read_bps": 0.0,
+          "write_bps": 0.0
+        },
+        "num_fds": 20
+      },
+      "status": "running",
+      "nanny": "tcp://127.0.0.1:36259"
+    },
+    "tcp://127.0.0.1:41879": {
+      "type": "Worker",
+      "id": 9,
+      "host": "127.0.0.1",
+      "resources": {},
+      "local_directory": "/root/github/DE-Forest/smac_outputs/2022-12-06_18:32:37/dask-worker-space/worker-56p5q_k3",
+      "name": 9,
+      "nthreads": 1,
+      "memory_limit": 4222727424,
+      "last_seen": 1670347960.7204754,
+      "services": {
+        "dashboard": 41065
+      },
+      "metrics": {
+        "task_counts": {
+          "executing": 0,
+          "long-running": 0,
+          "memory": 0,
+          "ready": 0,
+          "constrained": 0,
+          "waiting": 0,
+          "fetch": 0,
+          "missing": 0,
+          "flight": 0,
+          "other": 0
+        },
+        "bandwidth": {
+          "total": 100000000,
+          "workers": {},
+          "types": {}
+        },
+        "managed_bytes": 0,
+        "spilled_bytes": {
+          "memory": 0,
+          "disk": 0
+        },
+        "transfer": {
+          "incoming_bytes": 0,
+          "incoming_count": 0,
+          "incoming_count_total": 0,
+          "outgoing_bytes": 0,
+          "outgoing_count": 0,
+          "outgoing_count_total": 0
+        },
+        "event_loop_interval": 0.02,
+        "cpu": 0.0,
+        "memory": 156684288,
+        "time": 1670347960.6889255,
+        "host_net_io": {
+          "read_bps": 0.0,
+          "write_bps": 0.0
+        },
+        "host_disk_io": {
+          "read_bps": 0.0,
+          "write_bps": 0.0
+        },
+        "num_fds": 20
+      },
+      "status": "running",
+      "nanny": "tcp://127.0.0.1:44219"
+    },
+    "tcp://127.0.0.1:42841": {
+      "type": "Worker",
+      "id": 2,
+      "host": "127.0.0.1",
+      "resources": {},
+      "local_directory": "/root/github/DE-Forest/smac_outputs/2022-12-06_18:32:37/dask-worker-space/worker-ha6c2p_g",
+      "name": 2,
+      "nthreads": 1,
+      "memory_limit": 4222727424,
+      "last_seen": 1670347960.9731987,
+      "services": {
+        "dashboard": 44111
+      },
+      "metrics": {
+        "task_counts": {
+          "executing": 0,
+          "long-running": 0,
+          "memory": 0,
+          "ready": 0,
+          "constrained": 0,
+          "waiting": 0,
+          "fetch": 0,
+          "missing": 0,
+          "flight": 0,
+          "other": 0
+        },
+        "bandwidth": {
+          "total": 100000000,
+          "workers": {},
+          "types": {}
+        },
+        "managed_bytes": 0,
+        "spilled_bytes": {
+          "memory": 0,
+          "disk": 0
+        },
+        "transfer": {
+          "incoming_bytes": 0,
+          "incoming_count": 0,
+          "incoming_count_total": 0,
+          "outgoing_bytes": 0,
+          "outgoing_count": 0,
+          "outgoing_count_total": 0
+        },
+        "event_loop_interval": 0.02,
+        "cpu": 0.0,
+        "memory": 157102080,
+        "time": 1670347960.935509,
+        "host_net_io": {
+          "read_bps": 2235827.381387966,
+          "write_bps": 2235827.381387966
+        },
+        "host_disk_io": {
+          "read_bps": 0.0,
+          "write_bps": 0.0
+        },
+        "num_fds": 20
+      },
+      "status": "running",
+      "nanny": "tcp://127.0.0.1:43419"
+    },
+    "tcp://127.0.0.1:43061": {
+      "type": "Worker",
+      "id": 13,
+      "host": "127.0.0.1",
+      "resources": {},
+      "local_directory": "/root/github/DE-Forest/smac_outputs/2022-12-06_18:32:37/dask-worker-space/worker-kdjl9m5r",
+      "name": 13,
+      "nthreads": 1,
+      "memory_limit": 4222727424,
+      "last_seen": 1670347961.175791,
+      "services": {
+        "dashboard": 46205
+      },
+      "metrics": {
+        "task_counts": {
+          "executing": 0,
+          "long-running": 0,
+          "memory": 0,
+          "ready": 0,
+          "constrained": 0,
+          "waiting": 0,
+          "fetch": 0,
+          "missing": 0,
+          "flight": 0,
+          "other": 0
+        },
+        "bandwidth": {
+          "total": 100000000,
+          "workers": {},
+          "types": {}
+        },
+        "managed_bytes": 0,
+        "spilled_bytes": {
+          "memory": 0,
+          "disk": 0
+        },
+        "transfer": {
+          "incoming_bytes": 0,
+          "incoming_count": 0,
+          "incoming_count_total": 0,
+          "outgoing_bytes": 0,
+          "outgoing_count": 0,
+          "outgoing_count_total": 0
+        },
+        "event_loop_interval": 0.02,
+        "cpu": 0.0,
+        "memory": 156893184,
+        "time": 1670347961.1510801,
+        "host_net_io": {
+          "read_bps": 0.0,
+          "write_bps": 0.0
+        },
+        "host_disk_io": {
+          "read_bps": 0.0,
+          "write_bps": 0.0
+        },
+        "num_fds": 20
+      },
+      "status": "running",
+      "nanny": "tcp://127.0.0.1:45527"
+    },
+    "tcp://127.0.0.1:43155": {
+      "type": "Worker",
+      "id": 10,
+      "host": "127.0.0.1",
+      "resources": {},
+      "local_directory": "/root/github/DE-Forest/smac_outputs/2022-12-06_18:32:37/dask-worker-space/worker-lggu6dnr",
+      "name": 10,
+      "nthreads": 1,
+      "memory_limit": 4222727424,
+      "last_seen": 1670347960.9948626,
+      "services": {
+        "dashboard": 46827
+      },
+      "metrics": {
+        "task_counts": {
+          "executing": 0,
+          "long-running": 0,
+          "memory": 0,
+          "ready": 0,
+          "constrained": 0,
+          "waiting": 0,
+          "fetch": 0,
+          "missing": 0,
+          "flight": 0,
+          "other": 0
+        },
+        "bandwidth": {
+          "total": 100000000,
+          "workers": {},
+          "types": {}
+        },
+        "managed_bytes": 0,
+        "spilled_bytes": {
+          "memory": 0,
+          "disk": 0
+        },
+        "transfer": {
+          "incoming_bytes": 0,
+          "incoming_count": 0,
+          "incoming_count_total": 0,
+          "outgoing_bytes": 0,
+          "outgoing_count": 0,
+          "outgoing_count_total": 0
+        },
+        "event_loop_interval": 0.02,
+        "cpu": 0.0,
+        "memory": 156745728,
+        "time": 1670347960.9689126,
+        "host_net_io": {
+          "read_bps": 0.0,
+          "write_bps": 0.0
+        },
+        "host_disk_io": {
+          "read_bps": 0.0,
+          "write_bps": 0.0
+        },
+        "num_fds": 20
+      },
+      "status": "running",
+      "nanny": "tcp://127.0.0.1:36997"
+    },
+    "tcp://127.0.0.1:44649": {
+      "type": "Worker",
+      "id": 7,
+      "host": "127.0.0.1",
+      "resources": {},
+      "local_directory": "/root/github/DE-Forest/smac_outputs/2022-12-06_18:32:37/dask-worker-space/worker-_wzi421t",
+      "name": 7,
+      "nthreads": 1,
+      "memory_limit": 4222727424,
+      "last_seen": 1670347961.2282753,
+      "services": {
+        "dashboard": 33295
+      },
+      "metrics": {
+        "task_counts": {
+          "executing": 0,
+          "long-running": 0,
+          "memory": 0,
+          "ready": 0,
+          "constrained": 0,
+          "waiting": 0,
+          "fetch": 0,
+          "missing": 0,
+          "flight": 0,
+          "other": 0
+        },
+        "bandwidth": {
+          "total": 100000000,
+          "workers": {},
+          "types": {}
+        },
+        "managed_bytes": 0,
+        "spilled_bytes": {
+          "memory": 0,
+          "disk": 0
+        },
+        "transfer": {
+          "incoming_bytes": 0,
+          "incoming_count": 0,
+          "incoming_count_total": 0,
+          "outgoing_bytes": 0,
+          "outgoing_count": 0,
+          "outgoing_count_total": 0
+        },
+        "event_loop_interval": 0.02,
+        "cpu": 0.0,
+        "memory": 156815360,
+        "time": 1670347961.2098525,
+        "host_net_io": {
+          "read_bps": 0.0,
+          "write_bps": 0.0
+        },
+        "host_disk_io": {
+          "read_bps": 0.0,
+          "write_bps": 0.0
+        },
+        "num_fds": 20
+      },
+      "status": "running",
+      "nanny": "tcp://127.0.0.1:45749"
+    },
+    "tcp://127.0.0.1:45307": {
+      "type": "Worker",
+      "id": 0,
+      "host": "127.0.0.1",
+      "resources": {},
+      "local_directory": "/root/github/DE-Forest/smac_outputs/2022-12-06_18:32:37/dask-worker-space/worker-yufgl9rx",
+      "name": 0,
+      "nthreads": 1,
+      "memory_limit": 4222727424,
+      "last_seen": 1670347960.8603253,
+      "services": {
+        "dashboard": 35271
+      },
+      "metrics": {
+        "task_counts": {
+          "executing": 0,
+          "long-running": 0,
+          "memory": 0,
+          "ready": 0,
+          "constrained": 0,
+          "waiting": 0,
+          "fetch": 0,
+          "missing": 0,
+          "flight": 0,
+          "other": 0
+        },
+        "bandwidth": {
+          "total": 100000000,
+          "workers": {},
+          "types": {}
+        },
+        "managed_bytes": 0,
+        "spilled_bytes": {
+          "memory": 0,
+          "disk": 0
+        },
+        "transfer": {
+          "incoming_bytes": 0,
+          "incoming_count": 0,
+          "incoming_count_total": 0,
+          "outgoing_bytes": 0,
+          "outgoing_count": 0,
+          "outgoing_count_total": 0
+        },
+        "event_loop_interval": 0.02,
+        "cpu": 0.0,
+        "memory": 156725248,
+        "time": 1670347960.803508,
+        "host_net_io": {
+          "read_bps": 0.0,
+          "write_bps": 0.0
+        },
+        "host_disk_io": {
+          "read_bps": 0.0,
+          "write_bps": 0.0
+        },
+        "num_fds": 20
+      },
+      "status": "running",
+      "nanny": "tcp://127.0.0.1:36803"
+    },
+    "tcp://127.0.0.1:45559": {
+      "type": "Worker",
+      "id": 15,
+      "host": "127.0.0.1",
+      "resources": {},
+      "local_directory": "/root/github/DE-Forest/smac_outputs/2022-12-06_18:32:37/dask-worker-space/worker-_jiuki6s",
+      "name": 15,
+      "nthreads": 1,
+      "memory_limit": 4222727424,
+      "last_seen": 1670347960.845648,
+      "services": {
+        "dashboard": 41331
+      },
+      "metrics": {
+        "task_counts": {
+          "executing": 0,
+          "long-running": 0,
+          "memory": 0,
+          "ready": 0,
+          "constrained": 0,
+          "waiting": 0,
+          "fetch": 0,
+          "missing": 0,
+          "flight": 0,
+          "other": 0
+        },
+        "bandwidth": {
+          "total": 100000000,
+          "workers": {},
+          "types": {}
+        },
+        "managed_bytes": 0,
+        "spilled_bytes": {
+          "memory": 0,
+          "disk": 0
+        },
+        "transfer": {
+          "incoming_bytes": 0,
+          "incoming_count": 0,
+          "incoming_count_total": 0,
+          "outgoing_bytes": 0,
+          "outgoing_count": 0,
+          "outgoing_count_total": 0
+        },
+        "event_loop_interval": 0.02,
+        "cpu": 0.0,
+        "memory": 156762112,
+        "time": 1670347960.803502,
+        "host_net_io": {
+          "read_bps": 0.0,
+          "write_bps": 0.0
+        },
+        "host_disk_io": {
+          "read_bps": 0.0,
+          "write_bps": 0.0
+        },
+        "num_fds": 20
+      },
+      "status": "running",
+      "nanny": "tcp://127.0.0.1:44801"
+    },
+    "tcp://127.0.0.1:45567": {
+      "type": "Worker",
+      "id": 6,
+      "host": "127.0.0.1",
+      "resources": {},
+      "local_directory": "/root/github/DE-Forest/smac_outputs/2022-12-06_18:32:37/dask-worker-space/worker-_jjx4auf",
+      "name": 6,
+      "nthreads": 1,
+      "memory_limit": 4222727424,
+      "last_seen": 1670347961.1258361,
+      "services": {
+        "dashboard": 34775
+      },
+      "metrics": {
+        "task_counts": {
+          "executing": 0,
+          "long-running": 0,
+          "memory": 0,
+          "ready": 0,
+          "constrained": 0,
+          "waiting": 0,
+          "fetch": 0,
+          "missing": 0,
+          "flight": 0,
+          "other": 0
+        },
+        "bandwidth": {
+          "total": 100000000,
+          "workers": {},
+          "types": {}
+        },
+        "managed_bytes": 0,
+        "spilled_bytes": {
+          "memory": 0,
+          "disk": 0
+        },
+        "transfer": {
+          "incoming_bytes": 0,
+          "incoming_count": 0,
+          "incoming_count_total": 0,
+          "outgoing_bytes": 0,
+          "outgoing_count": 0,
+          "outgoing_count_total": 0
+        },
+        "event_loop_interval": 0.02,
+        "cpu": 0.0,
+        "memory": 157233152,
+        "time": 1670347961.1072164,
+        "host_net_io": {
+          "read_bps": 300368.1210054829,
+          "write_bps": 300368.1210054829
+        },
+        "host_disk_io": {
+          "read_bps": 0.0,
+          "write_bps": 0.0
+        },
+        "num_fds": 20
+      },
+      "status": "running",
+      "nanny": "tcp://127.0.0.1:35755"
+    },
+    "tcp://127.0.0.1:45661": {
+      "type": "Worker",
+      "id": 8,
+      "host": "127.0.0.1",
+      "resources": {},
+      "local_directory": "/root/github/DE-Forest/smac_outputs/2022-12-06_18:32:37/dask-worker-space/worker-jtf6qvfc",
+      "name": 8,
+      "nthreads": 1,
+      "memory_limit": 4222727424,
+      "last_seen": 1670347960.745347,
+      "services": {
+        "dashboard": 41017
+      },
+      "metrics": {
+        "task_counts": {
+          "executing": 0,
+          "long-running": 0,
+          "memory": 0,
+          "ready": 0,
+          "constrained": 0,
+          "waiting": 0,
+          "fetch": 0,
+          "missing": 0,
+          "flight": 0,
+          "other": 0
+        },
+        "bandwidth": {
+          "total": 100000000,
+          "workers": {},
+          "types": {}
+        },
+        "managed_bytes": 0,
+        "spilled_bytes": {
+          "memory": 0,
+          "disk": 0
+        },
+        "transfer": {
+          "incoming_bytes": 0,
+          "incoming_count": 0,
+          "incoming_count_total": 0,
+          "outgoing_bytes": 0,
+          "outgoing_count": 0,
+          "outgoing_count_total": 0
+        },
+        "event_loop_interval": 0.02,
+        "cpu": 0.0,
+        "memory": 156901376,
+        "time": 1670347960.707117,
+        "host_net_io": {
+          "read_bps": 0.0,
+          "write_bps": 0.0
+        },
+        "host_disk_io": {
+          "read_bps": 0.0,
+          "write_bps": 0.0
+        },
+        "num_fds": 20
+      },
+      "status": "running",
+      "nanny": "tcp://127.0.0.1:45839"
+    }
+  }
+}

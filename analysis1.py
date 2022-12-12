@@ -1,5 +1,7 @@
 import os
 import numpy as np
+import Orange
+# require: pip install orange3==3.33.0
 
 from pathlib import Path
 from sklearn.ensemble import RandomForestClassifier, ExtraTreesClassifier
@@ -10,6 +12,7 @@ from methods.Random_FS import RandomFS
 from utils.wilcoxon_ranking import pairs_metrics_multi_grid_all, pairs_metrics_multi_line
 from utils.plots import process_plot, diversity_bar_plot, result_tables, result_tables_for_time, result_tables_IR, result_tables_features
 from utils.datasets_table_description import make_description_table
+from utils.statistic_test import calc_ranks, friedman_test
 
 
 base_estimator = DecisionTreeClassifier(random_state=1234)
@@ -186,4 +189,22 @@ experiment_name = "experiment1"
 # diversity_bar_plot(diversity_mean, diversity_measures, method_names, experiment_name=experiment_name)
 
 # Time results in form of .tex table
-result_tables_for_time(dataset_paths, sum_times, methods, experiment_name)
+# result_tables_for_time(dataset_paths, sum_times, methods, experiment_name)
+
+for metric_id, metric_a in enumerate(metrics_alias):
+    ranks, mean_ranks = calc_ranks(mean_scores, metric_id)
+    critical_difference = Orange.evaluation.compute_CD(mean_ranks, n_datasets, test='nemenyi')
+
+    if not os.path.exists('results/%s/plot_ranks/' % experiment_name):
+        os.makedirs('results/%s/plot_ranks/' % experiment_name)
+
+    # Friedman test, implementation from Demsar2006
+    values = friedman_test(metric_a, method_names, mean_ranks, n_datasets, critical_difference)
+    print(values)
+    with open("results/%s/plot_ranks/statistic.tex" % (experiment_name), "a+") as file:
+        print(values, file=file)
+
+    # CD diagrams to compare base classfiers with each other based on Nemenyi test (post-hoc)
+    filename = "results/%s/plot_ranks/cd_%s" % (experiment_name, metric_a)
+    Orange.evaluation.graph_ranks(mean_ranks, list(method_names), cd=critical_difference, width=6, textspace=1.5, filename=filename+".png")
+    Orange.evaluation.graph_ranks(mean_ranks, list(method_names), cd=critical_difference, width=6, textspace=1.5, filename=filename+".eps")
