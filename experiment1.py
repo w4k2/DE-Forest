@@ -7,71 +7,36 @@ import traceback
 from pathlib import Path
 import warnings
 from imblearn.metrics import geometric_mean_score, specificity_score
-from sklearn.metrics import accuracy_score, balanced_accuracy_score, f1_score, precision_score, recall_score
+
+from sklearn.metrics import balanced_accuracy_score, f1_score, precision_score, recall_score
 from sklearn.tree import DecisionTreeClassifier
 from sklearn.model_selection import RepeatedStratifiedKFold
 from sklearn.preprocessing import MinMaxScaler
 from sklearn.base import clone
-from sklearn.ensemble import RandomForestClassifier, ExtraTreesClassifier
 
 from methods.DE_Forest import DifferentialEvolutionForest
 from methods.Random_FS import RandomFS
-# from utils.plots import optimization_plot
-# from utils.utils_diversity import calc_diversity_measures0
-
 from utils.load_datasets import load_dataset
 
 """
 Datasets are from KEEL repository.
 """
 
-
 base_estimator = DecisionTreeClassifier(random_state=1234)
-# multiprocessing inside optimization not work properly and cause Memory error
-n_proccess = 16
-# safe for my computer
-# n_proccess = 5
-# Wynik z badań na serwerze z 15.11.2022 dla 5 datasetów. to:
+# Wynik z badań na serwerze z 15.11.2022 (i 06.12.22 tak samo) dla 5 datasetów. to:
     # "bootstrap": "True",
     # "metric_name": "BAC",
     # "n_classifiers": 15,
     # "p_size": 107
 methods = {
-    # "DE_Forest":
-    #     DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=15, metric_name="BAC", bootstrap=True, random_state_cv=222, p_size=107),
-    # "RandomFS":
-    #     RandomFS(base_classifier=base_estimator, n_classifiers=15, bootstrap=False, max_features_selected=True),
-    # "RandomFS_b":
-    #     RandomFS(base_classifier=base_estimator, n_classifiers=15, bootstrap=True, max_features_selected=True),
-    # "DT":
-    #     DecisionTreeClassifier(random_state=1234),
-    # "RF":
-    #     RandomForestClassifier(random_state=0, n_estimators=15, bootstrap=False),
-    # "RF_b":
-    #     RandomForestClassifier(random_state=0, n_estimators=15, bootstrap=True),
-    "ET":
-        ExtraTreesClassifier(random_state=0, n_estimators=15, bootstrap=False),
-    "ET_b":
-        ExtraTreesClassifier(random_state=0, n_estimators=15, bootstrap=True),
-
-    # "DE_Forest_AUC":
-    #     DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="AUC", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222),
-    # "DE_Forest_bac":
-    #     DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="BAC", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222),
-    # "DE_Forest_gm_b":
-    #     DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="gm", alpha=1, bootstrap=True, n_proccess=n_proccess, random_state_cv=222),
-    # "DE_Forest_AUC_b":
-    #     DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="AUC", alpha=1, bootstrap=True, n_proccess=n_proccess, random_state_cv=222),
-    # "DE_Forest_bac_b":
-    #     DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="Accuracy", alpha=1, bootstrap=True, n_proccess=n_proccess),
-    # "DE_Forest_a1_bac_p":
-    #     DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="BAC", alpha=1, bootstrap=False, n_proccess=n_proccess, random_state_cv=222, pruning=True),
-    # "DE_Forest_a1_bac_bp":
-    #     DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=10, metric_name="BAC", alpha=1, bootstrap=True, n_proccess=n_proccess, random_state_cv=222, pruning=True),
-    # "RandomFS_all_feat":
-    #     RandomFS(base_classifier=base_estimator, n_classifiers=10, bootstrap=False, max_features_selected=False),
-    # "RandomFS_b_all_feat":
-        # RandomFS(base_classifier=base_estimator, n_classifiers=10, bootstrap=True, max_features_selected=False),
+    "DE_Forest":
+        DifferentialEvolutionForest(base_classifier=base_estimator, n_classifiers=15, metric_name="BAC", bootstrap=True, random_state_cv=222, p_size=107),
+    "RandomFS":
+        RandomFS(base_classifier=base_estimator, n_classifiers=15, bootstrap=False, max_features_selected=True),
+    "RandomFS_b":
+        RandomFS(base_classifier=base_estimator, n_classifiers=15, bootstrap=True, max_features_selected=True),
+    "DT":
+        DecisionTreeClassifier(random_state=1234),
 }
 
 # Repeated Stratified K-Fold cross validator
@@ -80,8 +45,6 @@ n_repeats = 5
 rskf = RepeatedStratifiedKFold(n_splits=n_splits, n_repeats=n_repeats, random_state=111)
 n_folds = n_splits * n_repeats
 
-# DATASETS_DIR = "dtest/"
-# DATASETS_DIR = "ds10/"
 DATASETS_DIR = "datasets/"
 dataset_paths = []
 for root, _, files in os.walk(DATASETS_DIR):
@@ -89,16 +52,14 @@ for root, _, files in os.walk(DATASETS_DIR):
         dataset_paths.append(os.path.join(root, filename))
 
 metrics = [
-    accuracy_score,
     balanced_accuracy_score,
-    geometric_mean_score, # Kolejnym razem wykorzystaj metrykę, która bezpośrednio bazuje na Precision i Recall (np. ze stream learna gmean2) - można zostawić tą metrykę, tylko potem zrobić g-mean conversion
+    geometric_mean_score, # The next time use g-mean metric that based on Precision and Recall (for example from stream-learn or calculate this). If you use this version of G-mean, convert the results by g_mean_conversion.py file
     f1_score,
     recall_score,
     specificity_score,
     precision_score
     ]
 metrics_alias = [
-    "ACC",
     "BAC",
     "Gmean",
     "F1score",
@@ -146,7 +107,6 @@ def compute(dataset_id, dataset_path):
                         scores[metric_id, clf_id, fold_id] = metric(y_test, y_pred, average="weighted")
                     else:
                         scores[metric_id, clf_id, fold_id] = metric(y_test, y_pred)
-                    # print(scores[metric_id, clf_id, fold_id])
 
                 # Diversity
                 calculate_diversity = getattr(clf, "calculate_diversity", None)
@@ -154,7 +114,6 @@ def compute(dataset_id, dataset_path):
                     diversity[clf_id, fold_id] = clf.calculate_diversity()
                 else:
                     diversity[clf_id, fold_id] = None
-                # print(diversity[clf_id, fold_id])
 
                 end_method = time.time() - start_method
                 logging.info("DONE METHOD %s - %s fold: %d (Time: %f [s])" % (clf_name, dataset_path, fold_id, end_method))
@@ -162,7 +121,6 @@ def compute(dataset_id, dataset_path):
 
                 time_for_all[clf_id, fold_id] = end_method
                 
-
         # Save results to csv
         for clf_id, clf_name in enumerate(methods):
             # Save metric results

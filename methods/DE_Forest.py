@@ -1,37 +1,30 @@
 import numpy as np
+from scipy.stats import mode
+
 from sklearn.base import BaseEstimator, clone
 from sklearn.utils import resample
 from sklearn.model_selection import RepeatedStratifiedKFold
 from sklearn.metrics import balanced_accuracy_score
-from scipy.stats import mode
 from pymoo.algorithms.soo.nonconvex.de import DE
 from pymoo.operators.sampling.lhs import LHS
 from pymoo.optimize import minimize
-from pymoo.factory import get_termination
+
 from .optimization import Optimization
 from .bootstrap_optimization import BootstrapOptimization
 from .bootstrap_optimization_with_constraints import BootstrapOptimizationConstr
 from utils.utils_diversity import calc_diversity_measures
 
-# from pymoo.core.problem import starmap_parallelized_eval
-from multiprocessing.pool import ThreadPool
-import multiprocessing
-
 
 class DifferentialEvolutionForest(BaseEstimator):
-    def __init__(self, base_classifier, metric_name="GM", alpha=0.5, n_classifiers=10, test_size=0.5, objectives=1, p_size=100, predict_decision="MV", bootstrap=False, n_proccess=8, random_state_cv=222, pruning=False, constraints=False):
+    def __init__(self, base_classifier, metric_name="GM", n_classifiers=10, p_size=100, predict_decision="MV", bootstrap=False, random_state_cv=222, pruning=False, constraints=False):
         self.base_classifier = base_classifier
         self.n_classifiers = n_classifiers
         self.classes = None
-        self.test_size = test_size
-        self.objectives = objectives
         self.p_size = p_size
         self.selected_features = []
         self.predict_decision = predict_decision
         self.metric_name = metric_name
-        self.alpha = alpha
         self.bootstrap = bootstrap
-        self.n_proccess = n_proccess
         self.random_state_cv = random_state_cv
         self.pruning = pruning
         self.constraints = constraints
@@ -45,8 +38,6 @@ class DifferentialEvolutionForest(BaseEstimator):
         n_features = X.shape[1]
 
         cross_validation = RepeatedStratifiedKFold(n_splits=2, n_repeats=5, random_state=self.random_state_cv)
-        # the number of processes to be used
-        # pool = multiprocessing.Pool(self.n_proccess)
         # Bootstrap
         X_b = []
         y_b = []
@@ -57,11 +48,10 @@ class DifferentialEvolutionForest(BaseEstimator):
                 X_b.append(Xy_bootstrap[0])
                 y_b.append(Xy_bootstrap[1])
             # Create optimization problem
-            # problem = BootstrapOptimization(X, y, X_b, y_b, test_size=self.test_size, estimator=self.base_classifier, n_features=n_features, n_classifiers=self.n_classifiers, metric_name=self.metric_name, alpha=self.alpha, runner=pool.starmap, func_eval=starmap_parallelized_eval)
             if self.constraints is True:
-                problem = BootstrapOptimizationConstr(X, y, X_b, y_b, test_size=self.test_size, estimator=self.base_classifier, n_features=n_features, n_classifiers=self.n_classifiers, metric_name=self.metric_name, alpha=self.alpha)
+                problem = BootstrapOptimizationConstr(X, y, X_b, y_b, estimator=self.base_classifier, n_features=n_features, n_classifiers=self.n_classifiers, metric_name=self.metric_name)
             else:
-                problem = BootstrapOptimization(X, y, X_b, y_b, test_size=self.test_size, estimator=self.base_classifier, n_features=n_features, n_classifiers=self.n_classifiers, metric_name=self.metric_name, alpha=self.alpha)
+                problem = BootstrapOptimization(X, y, X_b, y_b, estimator=self.base_classifier, n_features=n_features, n_classifiers=self.n_classifiers, metric_name=self.metric_name)
             algorithm = DE(
                 pop_size=self.p_size,
                 sampling=LHS(),
@@ -72,8 +62,7 @@ class DifferentialEvolutionForest(BaseEstimator):
                 )
         else:
             # Create optimization problem
-            # problem = Optimization(X, y, test_size=self.test_size, estimator=self.base_classifier, n_features=n_features, n_classifiers=self.n_classifiers, metric_name=self.metric_name, alpha=self.alpha, cross_validation=cross_validation, runner=pool.starmap, func_eval=starmap_parallelized_eval)
-            problem = Optimization(X, y, test_size=self.test_size, estimator=self.base_classifier, n_features=n_features, n_classifiers=self.n_classifiers, metric_name=self.metric_name, alpha=self.alpha, cross_validation=cross_validation)
+            problem = Optimization(X, y, estimator=self.base_classifier, n_features=n_features, n_classifiers=self.n_classifiers, metric_name=self.metric_name, cross_validation=cross_validation)
             algorithm = DE(
                 pop_size=self.p_size,
                 sampling=LHS(),
@@ -85,21 +74,16 @@ class DifferentialEvolutionForest(BaseEstimator):
         # It has also been found that setting CR to a low value, e.g., CR=0.2 helps to optimize separable functions since it fosters the search along the coordinate axes. On the contrary, this choice is not effective if parameter dependence is encountered, which frequently occurs in real-world optimization problems rather than artificial test functions. So for parameter dependence, the choice of CR=0.9 is more appropriate.
         # One strategy to introduce adaptive weights (F) during one run. The option allows the same dither to be used in one iteration (‘scalar’) or a different one for each individual (‘vector).
         # Another strategy for adaptive weights (F). Here, only a very small value is added or subtracted to the F used for the crossover for each individual.
-        # termination = get_termination("n_gen", 10)
         res = minimize(problem,
                        algorithm,
-                       # termination,
                        seed=1,
                        save_history=True,
                        verbose=False)
-        # verbose=True)
         self.res_history = res.history
 
         # F returns all Pareto front solutions (quality) in form [-accuracy]
         self.quality = res.F
         # X returns values of selected features
-        # print(res.X)
-        # print("Wynik", res.F)
         for result_opt in res.X:
             if result_opt > 0.5:
                 feature = True

@@ -1,17 +1,14 @@
 import numpy as np
 import math
 from sklearn.base import clone
-from sklearn.metrics import accuracy_score, balanced_accuracy_score, roc_auc_score, precision_score, recall_score
-# from imblearn.metrics import geometric_mean_score
+from sklearn.metrics import balanced_accuracy_score, roc_auc_score, precision_score, recall_score
 from scipy.stats import mode
 from pymoo.core.problem import ElementwiseProblem
 
 
 class Optimization(ElementwiseProblem):
-    def __init__(self, X, y, test_size, estimator, n_features, metric_name, alpha, cross_validation, objectives=1, n_classifiers=10, **kwargs):
-        # runner, func_eval,
+    def __init__(self, X, y, estimator, n_features, metric_name, cross_validation, objectives=1, n_classifiers=10, **kwargs):
         self.estimator = estimator
-        self.test_size = test_size
         self.objectives = objectives
         self.n_features = n_features
         self.n_classifiers = n_classifiers
@@ -19,7 +16,6 @@ class Optimization(ElementwiseProblem):
         self.y = y
         self.classes_, _ = np.unique(self.y, return_inverse=True)
         self.metric_name = metric_name
-        self.alpha = alpha
         self.cross_validation = cross_validation
 
         # Lower and upper bounds for x - 1d array with length equal to number of variable
@@ -29,8 +25,7 @@ class Optimization(ElementwiseProblem):
 
         super().__init__(n_var=n_variable, n_obj=objectives,
                          n_constr=0, xl=xl_binary, xu=xu_binary, **kwargs)
-        # runner=runner, func_eval=func_eval,
-
+        
     def predict(self, X, selected_features, ensemble):
         predictions = np.array([member_clf.predict(X[:, sf]) for member_clf, sf in zip(ensemble, selected_features)])
         prediction = np.squeeze(mode(predictions, axis=0)[0])
@@ -71,10 +66,7 @@ class Optimization(ElementwiseProblem):
             y_pred = self.predict(X_test, selected_features, ensemble)
             if self.metric_name == "BAC":
                 scores[fold_id] = balanced_accuracy_score(y_test, y_pred)
-        # !!! Jeśli będę używać metryki GM, trzeba zmienić sposób liczenia tej metryki
             elif self.metric_name == "GM":
-                # scores[fold_id] = geometric_mean_score(y_test, y_pred)
-
                 precision = precision_score(y_test, y_pred)
                 recall = recall_score(y_test, y_pred)
                 # Convert G-mean metric to sqrt(Recall*Precision)
@@ -85,15 +77,6 @@ class Optimization(ElementwiseProblem):
 
     def _evaluate(self, x, out, *args, **kwargs):
         scores = self.validation(x)
-
         # Function F is always minimize, but the minus sign (-) before F means maximize
         f1 = -1 * scores
         out["F"] = f1
-
-        # Function constraint to select specific numbers of features:
-        # number = int((1 - self.scale_features) * self.n_features)
-        # out["G"] = (self.n_features - np.sum(x[2:]) - number) ** 2
-
-        # print(x)
-        # out["G"] = int(math.sqrt(self.n_features)) - np.sum(x[0:self.n_classifiers])
-        # print(out["G"])

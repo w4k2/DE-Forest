@@ -18,14 +18,10 @@ from sklearn.preprocessing import MinMaxScaler
 from methods.DE_Forest import DifferentialEvolutionForest
 from utils.load_datasets import load_dataset
 
-# logging.basicConfig(level=logging.INFO)
+# SMAC Version: V2.0.0a1
 warnings.filterwarnings("ignore")
 
-# SMAC Version: V2.0.0a1
-
-
 DATASETS_DIR = "datasets_pre_experiment/"
-# DATASETS_DIR = "dtest/"
 dataset_paths = []
 for root, _, files in os.walk(DATASETS_DIR):
     for filename in filter(lambda _: _.endswith('.dat'), files):
@@ -111,7 +107,8 @@ if __name__ == "__main__":
         max_budget=len(instances),  # Use max as many instances as we have datasets
         instances=instances,
         output_directory=Path("smac_outputs/%s" % (date_time)),
-        n_workers = 16, # 16 rdzeni na serwerze, uruchamiaj na max. 2 na własnym komputerze
+        # 16 cores on the server, but on the laptop use only max. 2
+        n_workers = 16, # !!!
         instance_features={item:[idx, idx+1] for idx, item in enumerate(instances)}
     )
 

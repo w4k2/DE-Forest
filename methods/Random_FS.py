@@ -5,7 +5,6 @@ from scipy.stats import mode
 from random import choice
 import math
 from utils.utils_diversity import calc_diversity_measures
-# import sys
 
 # Setup to print all dataset array
 # np.set_printoptions(threshold=sys.maxsize)
@@ -41,7 +40,6 @@ class RandomFS(BaseEstimator):
         if self.max_features_selected:
             for clf in range(self.n_classifiers):
                 max_features = int(math.sqrt(n_features))
-                # max_features = 3
                 count_1 = max_features
                 count_0 = n_features - max_features
                 total_count = n_features
@@ -66,9 +64,7 @@ class RandomFS(BaseEstimator):
         for sf in self.selected_features:
             if self.bootstrap is True:
                 # Prepare bootstrap sample
-                # n_samples=5,
                 Xy_bootstrap = resample(X, y, replace=True, random_state=random_state)
-                # print('Bootstrap Sample: %s' % Xy_bootstrap)
                 random_state += 1
                 X_b = Xy_bootstrap[0]
                 y_b = Xy_bootstrap[1]

@@ -2,8 +2,6 @@ import os
 import numpy as np
 import math
 from pathlib import Path
-
-from sklearn.ensemble import RandomForestClassifier, ExtraTreesClassifier
 from sklearn.tree import DecisionTreeClassifier
 
 from methods.DE_Forest import DifferentialEvolutionForest
@@ -28,17 +26,7 @@ methods = {
         RandomFS(base_classifier=base_estimator, n_classifiers=15, bootstrap=True, max_features_selected=True),
     "DT":
         DecisionTreeClassifier(random_state=1234),
-    "RF":
-        RandomForestClassifier(random_state=1234, n_estimators=15, bootstrap=False, max_depth=2, max_leaf_nodes=4),
-    "RF_b":
-        RandomForestClassifier(random_state=0, n_estimators=15, bootstrap=True),
-    "ET":
-        ExtraTreesClassifier(random_state=0, n_estimators=15, bootstrap=False),
-    "ET_b":
-        ExtraTreesClassifier(random_state=0, n_estimators=15, bootstrap=True),
 }
-
-method_names = methods.keys()
 
 metrics_base = [
     "Recall",

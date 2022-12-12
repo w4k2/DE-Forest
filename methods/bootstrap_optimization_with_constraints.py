@@ -1,17 +1,14 @@
 import numpy as np
 import math
 from sklearn.base import clone
-from sklearn.metrics import accuracy_score, balanced_accuracy_score, roc_auc_score, precision_score, recall_score
-# from imblearn.metrics import geometric_mean_score
+from sklearn.metrics import balanced_accuracy_score, roc_auc_score, precision_score, recall_score
 from scipy.stats import mode
 from pymoo.core.problem import ElementwiseProblem
 
 
 class BootstrapOptimizationConstr(ElementwiseProblem):
-    def __init__(self, X, y, X_b, y_b, test_size, estimator, n_features, metric_name, alpha, objectives=1, n_classifiers=10, **kwargs):
-        # runner, func_eval,
+    def __init__(self, X, y, X_b, y_b, estimator, n_features, metric_name, objectives=1, n_classifiers=10, **kwargs):
         self.estimator = estimator
-        self.test_size = test_size
         self.objectives = objectives
         self.n_features = n_features
         self.n_classifiers = n_classifiers
@@ -21,7 +18,6 @@ class BootstrapOptimizationConstr(ElementwiseProblem):
         self.X_b = X_b
         self.y_b = y_b
         self.metric_name = metric_name
-        self.alpha = alpha
 
         # Lower and upper bounds for x - 1d array with length equal to number of variable
         n_variable = self.n_classifiers * self.n_features
@@ -29,10 +25,8 @@ class BootstrapOptimizationConstr(ElementwiseProblem):
         xu_binary = [1] * n_variable
 
         # !!! Set n_ieq_constr=0, if constraint is not used
-
         super().__init__(n_var=n_variable, n_obj=objectives, n_ieq_constr=1, n_eq_constr=0, xl=xl_binary, xu=xu_binary, **kwargs)
-        # runner=runner, func_eval=func_eval,
-
+        
     def predict(self, X, selected_features, ensemble):
         predictions = np.array([member_clf.predict(X[:, sf]) for member_clf, sf in zip(ensemble, selected_features)])
         prediction = np.squeeze(mode(predictions, axis=0)[0])
@@ -70,10 +64,7 @@ class BootstrapOptimizationConstr(ElementwiseProblem):
         y_pred = self.predict(self.X, selected_features, ensemble)
         if self.metric_name == "BAC":
             self.metric = balanced_accuracy_score(self.y, y_pred)
-        # !!! Jeśli będę używać metryki GM, trzeba zmienić sposób liczenia tej metryki
         elif self.metric_name == "GM":
-            # self.metric = geometric_mean_score(self.y, y_pred)
-
             precision = precision_score(self.y, y_pred)
             recall = recall_score(self.y, y_pred)
             # Convert G-mean metric to sqrt(Recall*Precision)
@@ -88,13 +79,6 @@ class BootstrapOptimizationConstr(ElementwiseProblem):
         f1 = -1 * scores
         out["F"] = f1
 
-        # Function constraint to select specific numbers of features:
-        # number = int((1 - self.scale_features) * self.n_features)
-        # out["G"] = (self.n_features - np.sum(x[2:]) - number) ** 2
-        # print(out["G"])
-        # print((x[2:]))
-
-        # print(x)
         selected_features = []
         for result_opt in x:
             if result_opt > 0.5:
@@ -104,7 +88,5 @@ class BootstrapOptimizationConstr(ElementwiseProblem):
                 feature = False
                 selected_features.append(feature)
         selected_features = np.array_split(selected_features, self.n_classifiers)
-        # print(selected_features, np.sum(selected_features, axis=1), max(np.sum(selected_features, axis=1)), self.n_features, 0.5 * self.n_features)
-        # to co jest po prawej stronie ma być <= 0
+        # Function constraint to select specific numbers of features (50%):
         out["G"] = max(np.sum(selected_features, axis=1)) - int(0.5 * self.n_features)
-        # print(out["G"])
