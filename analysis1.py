@@ -8,6 +8,8 @@ from methods.Random_FS import RandomFS
 from utils.wilcoxon_ranking import pairs_metrics_multi_grid_all, pairs_metrics_multi_line
 from utils.plots import result_tables, result_tables_for_time, result_tables_IR, result_tables_features
 from utils.datasets_table_description import make_description_table
+from utils.load_datasets import load_dataset
+from utils.datasets_table_description import calc_imbalance_ratio
 
 
 base_estimator = DecisionTreeClassifier(random_state=1234)
@@ -34,10 +36,18 @@ metrics_alias = [
 
 DATASETS_DIR = "datasets/"
 dataset_paths = []
+dataset_names = []
+imbalance_ratios = []
 for root, _, files in os.walk(DATASETS_DIR):
     print(root, files)
     for filename in filter(lambda _: _.endswith('.dat'), files):
         dataset_paths.append(os.path.join(root, filename))
+        dataset_path = os.path.join(root, filename)
+        dataset_name = Path(dataset_path).stem
+        dataset_names.append(dataset_name)
+        X, y = load_dataset(dataset_path)
+        IR = calc_imbalance_ratio(X, y)
+        imbalance_ratios.append(IR)
 
 n_splits = 2
 n_repeats = 5
@@ -79,25 +89,24 @@ for dataset_id, dataset_path in enumerate(dataset_paths):
             print("Error loading time data!", dataset_name, clf_name)
 
 # All datasets with description in the table
-make_description_table(DATASETS_DIR)
+# make_description_table(DATASETS_DIR)
 
 experiment_name = "experiment1"
 # Results in form of one .tex table of each metric
-result_tables(dataset_paths, metrics_alias, mean_scores, methods, stds, experiment_name)
+# result_tables(dataset_paths, metrics_alias, mean_scores, methods, stds, experiment_name)
 
 # Results in form of one .tex table of each metric sorted by IR
-result_tables_IR(dataset_paths, metrics_alias, mean_scores, methods, stds, experiment_name)
+# result_tables_IR(dataset_paths, metrics_alias, mean_scores, methods, stds, experiment_name)
 
 # Results in form of one .tex table of each metric sorted by number of features
-result_tables_features(dataset_paths, metrics_alias, mean_scores, methods, stds, experiment_name)
+# result_tables_features(dataset_paths, metrics_alias, mean_scores, methods, stds, experiment_name)
 
 # Wilcoxon ranking grid - statistic test for all methods
 # pairs_metrics_multi_grid_all(method_names=method_names, data_np=data_np, experiment_name=experiment_name, dataset_paths=dataset_paths, metrics=metrics_alias, filename="ex1_wilcoxon_all", ref_methods=list(method_names)[0:2], offset=-10)
 
 
 # Wilcoxon ranking line - statistic test for my method vs the remaining methods
-pairs_metrics_multi_line(method_names=list(method_names), data_np=data_np, experiment_name=experiment_name, dataset_paths=dataset_paths, metrics=metrics_alias, filename="ex1_wilcoxon", ref_methods=list(method_names))
+# pairs_metrics_multi_line(method_names=list(method_names), data_np=data_np, experiment_name=experiment_name, dataset_paths=dataset_paths, metrics=metrics_alias, filename="ex1_wilcoxon", ref_methods=list(method_names))
 
 # Time results in form of .tex table
-result_tables_for_time(dataset_paths, sum_times, methods, experiment_name)
-
+# result_tables_for_time(dataset_names, imbalance_ratios, sum_times, methods, experiment_name)

@@ -163,7 +163,8 @@ def pairs_metrics_multi_line(method_names, data_np, experiment_name, dataset_pat
     fig, axes = plt.subplots(1, len(metrics))
     fig.subplots_adjust(wspace=0.6, hspace=0.2)
     
-    fig.suptitle(method_names[0], fontsize=32, x=0.5, y=1.3)
+    fig.suptitle(method_names[0], fontsize=22, x=0.5, y=1.3)
+    # fig.suptitle("DE-Forest with constraints", fontsize=22, x=0.5, y=1.3)
 
     # --------------------------------------
     # Init/clear ranks
@@ -245,11 +246,11 @@ def pairs_metrics_multi_line(method_names, data_np, experiment_name, dataset_pat
             axes[index_j].axvline(critical_difference, 0, 1, linestyle="--", linewidth=3, color="black")
 
     for j, metric_a in enumerate(metrics):
-        axes[j].set_title(metric_a.upper(), fontsize=22)
+        axes[j].set_title(metric_a.upper(), fontsize=16)
 
     if not os.path.exists("results/%s/ranking/" % (experiment_name)):
         os.makedirs("results/%s/ranking/" % (experiment_name))
-    plt.gcf().set_size_inches(25, 2)
+    plt.gcf().set_size_inches(20, 1.5)
     filepath = "results/%s/ranking/%s" % (experiment_name, filename)
     plt.savefig(filepath + ".png", bbox_inches='tight')
     plt.savefig(filepath + ".eps", format='eps', bbox_inches='tight')

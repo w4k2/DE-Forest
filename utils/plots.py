@@ -136,7 +136,8 @@ def result_tables(dataset_paths, metrics_alias, mean_scores, methods, stds, expe
             print("\\end{table}", file=file)
 
 
-def result_tables_for_time(dataset_paths, sum_times, methods, experiment_name):
+def result_tables_for_time(dataset_names, imbalance_ratios, sum_times, methods, experiment_name):
+    IR_argsorted = np.argsort(imbalance_ratios)
     if not os.path.exists("results/%s/tables/" % experiment_name):
         os.makedirs("results/%s/tables/" % experiment_name)
     with open("results/%s/tables/time_%s.tex" % (experiment_name, experiment_name), "w+") as file:
@@ -150,7 +151,7 @@ def result_tables_for_time(dataset_paths, sum_times, methods, experiment_name):
         print("\\scalebox{0.4}{", file=file)
         print("\\begin{tabular}{%s}" % columns, file=file)
         print("\\hline", file=file)
-        columns_names = "\\textbf{Dataset name} &"
+        columns_names = "\\textbf{ID} &"
         for name in methods:
             name = name.replace("_", "-")
             columns_names += f'\\textbf{{{name}}} & '
@@ -158,17 +159,14 @@ def result_tables_for_time(dataset_paths, sum_times, methods, experiment_name):
         columns_names += "\\\\"
         print(columns_names, file=file)
         print("\\hline", file=file)
-        for dataset_id, dataset_path in enumerate(dataset_paths):
-            line = "$%s$" % (dataset_path)
-            line_values = []
-            line_values = sum_times[dataset_id, :]
-            max_value = np.amax(line_values)
+    
+        for id, arg in enumerate(IR_argsorted):
+            id += 1
+            # ds_name = dataset_names[arg].replace("_", "\\_")
+            # line = "%d & \\emph{%s}" % (id, ds_name)
+            line = "%d" % (id)
             for clf_id, clf_name in enumerate(methods):
-                line += " & %0.3f" % (sum_times[dataset_id, clf_id])
-                # if mean_times_folds[dataset_id, clf_id] == max_value:
-                #     line += " & \\textbf{%0.3f}" % (mean_times_folds[dataset_id, clf_id])
-                # else:
-                #     line += " & %0.3f" % (mean_times_folds[dataset_id, clf_id])
+                line += " & %0.3f" % (sum_times[arg, clf_id])
             line += " \\\\"
             print(line, file=file)
         print("\\end{tabular}}", file=file)

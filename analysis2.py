@@ -85,19 +85,19 @@ for dataset_id, dataset_path in enumerate(dataset_paths):
             print("Error loading time data!", dataset_name, clf_name)
 
 # Results in form of one .tex table of each metric
-result_tables(dataset_paths, metrics_alias, mean_scores, methods, stds, experiment_name)
+# result_tables(dataset_paths, metrics_alias, mean_scores, methods, stds, experiment_name)
 
 # Results in form of one .tex table of each metric sorted by IR
-result_tables_IR(dataset_paths, metrics_alias, mean_scores, methods, stds, experiment_name)
+# result_tables_IR(dataset_paths, metrics_alias, mean_scores, methods, stds, experiment_name)
 
 # Results in form of one .tex table of each metric sorted by number of features
-result_tables_features(dataset_paths, metrics_alias, mean_scores, methods, stds, experiment_name)
+# result_tables_features(dataset_paths, metrics_alias, mean_scores, methods, stds, experiment_name)
 
 # Wilcoxon ranking grid - statistic test for all methods
-pairs_metrics_multi_grid_all(method_names=method_names, data_np=data_np, experiment_name=experiment_name, dataset_paths=dataset_paths, metrics=metrics_alias, filename="ex2_wilcoxon_all", ref_methods=list(method_names)[0:2], offset=-10)
+# pairs_metrics_multi_grid_all(method_names=method_names, data_np=data_np, experiment_name=experiment_name, dataset_paths=dataset_paths, metrics=metrics_alias, filename="ex2_wilcoxon_all", ref_methods=list(method_names)[0:2], offset=-10)
 
 # Wilcoxon ranking line - statistic test for my method vs the remaining methods
 pairs_metrics_multi_line(method_names=list(method_names), data_np=data_np, experiment_name=experiment_name, dataset_paths=dataset_paths, metrics=metrics_alias, filename="ex2_wilcoxon", ref_methods=list(method_names))
 
 # Time results in form of .tex table
-result_tables_for_time(dataset_paths, mean_times_folds, methods, experiment_name)
+# result_tables_for_time(dataset_paths, mean_times_folds, methods, experiment_name)
