@@ -34,13 +34,7 @@ for path in paths:
 # Closing file
 f.close()
 
-fig, axs = plt.subplots(2, 2, figsize=(12, 12), constrained_layout=True)
-
-# axs[0].stem(index, bac_score, 'lightgray')
-# axs[0].set_title("Balanced Accuracy")
-# axs[0].set_ylabel("BAC score")
-# axs[0].grid(color='lightgray')
-# axs[0].set_color(color='lightgray')
+fig, axs = plt.subplots(2, 2, figsize=(12, 8), constrained_layout=True)
 
 axs.flat[0].stem(index, n_clfs)
 axs.flat[0].set_title("The number of classifiers")
@@ -100,8 +94,7 @@ fig.suptitle('SMAC optimization')
 
 if not os.path.exists("smac_outputs/plots/"):
     os.makedirs("smac_outputs/plots/")
-# plt.gcf().set_size_inches(20, 1.5)
-filepath = "smac_outputs/plots/figure1"
+filepath = "smac_outputs/plots/smac_plot"
 plt.savefig(filepath + ".png", bbox_inches='tight')
 plt.savefig(filepath + ".eps", format='eps', bbox_inches='tight')
 plt.clf()

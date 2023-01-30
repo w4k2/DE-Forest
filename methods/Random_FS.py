@@ -35,7 +35,7 @@ class RandomFS(BaseEstimator):
             self.classes_, _ = np.unique(self.y, return_inverse=True)
         n_features = X.shape[1]
         # Random feature selection
-        # Wybiera cechy randomowo, ale maksymalna liczba wybranych cech jest mniejsza lub równa sqrt(n_features)
+        # It selects features randomly, but max. number of features is <= sqrt(n_features)
         features = []
         if self.max_features_selected:
             for clf in range(self.n_classifiers):
